@@ -1,4 +1,4 @@
-package com.revature.datta;
+package com.revature;
 
 import org.junit.jupiter.api.Test;
 

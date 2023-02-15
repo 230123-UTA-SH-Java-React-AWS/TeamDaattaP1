@@ -1,4 +1,4 @@
-package com.revature.datta;
+package com.revature;
 
 /**
  * Hello world!

@@ -5,14 +5,24 @@ import { store } from "./app/store";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 
+const router = createBrowserRouter(
+  createRoutesFromElements(<Route path="/" element={<App />}></Route>)
+);
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <RouterProvider router={router} />
     </Provider>
   </React.StrictMode>
 );

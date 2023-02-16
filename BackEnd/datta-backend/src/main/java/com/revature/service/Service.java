@@ -33,5 +33,9 @@ public class Service {
 
     }
 
+    public void registerUser(String jsonUser){
+        //Skeleton
+    }
+
     ///Maybe a convert from string method here, or several as needed
 }

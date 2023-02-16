@@ -1,43 +1,27 @@
 package com.revature.controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import com.revature.service.Service;
 
-import javax.servlet.http.HttpSession;
 
 import io.javalin.Javalin;
 
 public class UserController{
     
-    //private UserService = new Service();
+    private Service userService = new Service();
 
-    private void mapEndpoints(Javalin app){
-        app.post("/login", (ctx) ->{
-            // take the JSON in the request body and place it into the user Object
-            AppUserAccount credentials = ctx.bodyStreamAsClass(AppUserAccount.class);
+    public void mapEndpoints(Javalin app) {
+        app.post("/register", (ctx) ->{
+            String userJson = ctx.body();
 
-            // System.out.println(credentials);
-
+            // Try creating the new Account
             try{
-                AppUserAccount user = appAuthService.login(credentials.getUsername(), credentials.getPassword());
+                userService.registerUser(userJson);
 
-                // set the user object into an HTTPSession object
-                HttpSession session = ctx.req.getSession(); // get the HTTPSession (there is a cookie utilized by the client)
-                // to identify the httpSession object associated with the client
-                session.setAttribute("user", user);
-
-                ctx.result("Welcome " + user.getFirstName() + " " + user.getLastName());
-                ctx.status(200);
-            }
-            catch (InvalidAccountLoginException e){
-                ctx.status(400);
-                ctx.result(e.getMessage());
+                ctx.result("Account successfully created.");
+                ctx.status(201);    // 2xx success - 201 Created
+            } catch (Exception e){
+                ctx.result(e.getMessage()); // print exception message
+                ctx.status(500); // 5xx server errors - 500 Internal Server Error
             }
         });
     }

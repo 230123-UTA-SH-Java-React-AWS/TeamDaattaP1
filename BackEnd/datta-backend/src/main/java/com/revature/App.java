@@ -1,17 +1,21 @@
 package com.revature;
 
-/**
- * Hello world!
- */
+// import java.net.InetSocketAddress;
+
+// import com.revature.controller.PostController;
+// import com.sun.net.httpserver.HttpServer;
+
+import io.javalin.Javalin;
+
 public final class App {
     private App() {
     }
 
-    /**
-     * Says hello to the world.
-     * @param args The arguments of the program.
-     */
-    public static void main(String[] args) {
-        System.out.println("Hello World!");
+    public static void main(String[] args) throws Exception{
+
+        Javalin app = Javalin.create(/*config*/)
+            .get("/", ctx -> ctx.result("Hello World"))
+            .start(8000);
+
     }
 }

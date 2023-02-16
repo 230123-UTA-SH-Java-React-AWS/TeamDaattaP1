@@ -21,7 +21,7 @@ public class LoginCred {
     }
 
     public LoginCred(){
-        this.email = "";
-        this.password = "";
+        this.email = null;
+        this.password = null;
     }
 }

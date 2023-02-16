@@ -33,7 +33,7 @@ public class Comment {
     public void settStamp(java.sql.Date tStamp) {
         this.tStamp = tStamp;
     }
-
+    
     public Comment(){
         this.content = null;
         this.tStamp = null;

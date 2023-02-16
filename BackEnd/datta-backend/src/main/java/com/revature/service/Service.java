@@ -27,7 +27,7 @@ public class Service {
         //ObjectMapper mapper = new ObjectMapper();
 
         /*try {
-            LoginCred newLogin = mapper.readValue(jsonString, LoginCred.class);
+            User newLogin = mapper.readValue(jsonString, LoginCred.class);
             repo.loginUser(newLogin);
         } */
 

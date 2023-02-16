@@ -1,5 +1,6 @@
 package com.revature;
 
+import com.revature.controller.PostController;
 import com.revature.controller.UserController;
 
 // import java.net.InetSocketAddress;
@@ -15,11 +16,14 @@ public final class App {
 
     public static void main(String[] args) throws Exception{
 
-        Javalin app = Javalin.create(/*config*/)
-            .get("/", ctx -> ctx.result("Hello World"))
-            .start(8000);
+        Javalin app = Javalin.create();
 
-        UserController loginController = new UserController();
-        loginController.mapEndpoints(app);
+        UserController userController = new UserController();
+        userController.mapEndpoints(app);
+
+        PostController postController =  new PostController();
+        postController.mapEndpoints(app);
+
+        app.start(8000);
     }
 }

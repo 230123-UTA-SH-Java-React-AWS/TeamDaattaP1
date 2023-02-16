@@ -1,15 +1,17 @@
 package com.revature.controller;
 
+import com.revature.service.AccountService;
+
 import javax.servlet.http.HttpSession;
 
 import com.revature.model.Account;
-import com.revature.service.Service;
+import com.revature.service.AccountService;
 
 import io.javalin.Javalin;
 
 public class UserController{
-    // service layer
-    private Service userService = new Service();
+    
+    private AccountService userService = new AccountService();
 
     // UserController - handles user login, logout, and register HTTP requests
     public void mapEndpoints(Javalin app) {

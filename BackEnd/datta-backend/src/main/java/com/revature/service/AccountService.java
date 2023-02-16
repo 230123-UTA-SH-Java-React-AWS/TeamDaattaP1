@@ -1,22 +1,7 @@
 package com.revature.service;
 
-public class Service {
+public class AccountService {
     //perhaps make a repo in a constructor? or make a static repo? check on that later
-
-    ///Communicates with the repo to add a new post to the database
-    //Might need a return type later, for now only void
-    public void createNewPost(String jsonPost){
-        ///Shell code for now, commented out to prevent compiler yelling at us
-        //Repository repo = new Repository();
-
-        //ObjectMapper mapper - new ObjectMapper();
-
-        /*try {
-            Post newPost = mapper.readValue(jsonString, Post.class);
-            repo.savePostMethodName(newPost)     will likely need username/userid as well, to tie to foreign key
-        } catch block here
-         */
-    }
 
     ///Communicates with the repo to check if inputted credentials are in the database
     //Will almost certainly need a return type later
@@ -37,5 +22,8 @@ public class Service {
         //Skeleton
     }
 
+    public void changeAccountInfo(String jsonAccount){
+        //Skeleton
+    }
     ///Maybe a convert from string method here, or several as needed
 }

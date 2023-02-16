@@ -1,13 +1,13 @@
 package com.revature.controller;
 
-import com.revature.service.Service;
+import com.revature.service.AccountService;
 
 
 import io.javalin.Javalin;
 
 public class UserController{
     
-    private Service userService = new Service();
+    private AccountService userService = new AccountService();
 
     public void mapEndpoints(Javalin app) {
         app.post("/register", (ctx) ->{

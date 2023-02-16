@@ -27,18 +27,17 @@ public class LoginCredsRepo {
         this.RegisterToAccountRepo(Cred.getEmail(), Cred.getPassword());
     }
 
-    //returns true if login is seccuessful, otherwise returns false
-    //could throw exceptions on failure if that would be perfered
-    //could also just return the matching password and let the service handle validation
+    //returns LoginCred from the database that matches the credentials of the input LoginCreds; EI, one with a userID.
+    //still does a bit of validation, but that can still be done elsewhere,  then we can get rid of this horribly ugly if-statement
     public LoginCred Login(LoginCred Cred){
         //TODO: change return type to object
-        boolean result = false;
-        if (Accounts.containsKey(Cred.getEmail())
-             && Accounts.get(Cred.getEmail()).equals(Cred.getPassword())
+        LoginCred realCreds = null;
+        if (Accounts.containsKey(Cred.getEmail()) //login exists
+             && Accounts.get(Cred.getEmail()).getPassword().equals(Cred.getPassword()) //password matches
              ){
-            result = true;
+                realCreds = Accounts.get(Cred.getEmail());
         }
-        return result;
+        return realCreds;
     }
     //methods to split up database and non-database interactions
     private void FillRepoFromDatabase(){

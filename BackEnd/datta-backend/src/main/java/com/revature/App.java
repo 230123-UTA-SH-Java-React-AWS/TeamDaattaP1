@@ -1,5 +1,7 @@
 package com.revature;
 
+import com.revature.controller.UserController;
+
 // import java.net.InetSocketAddress;
 
 // import com.revature.controller.PostController;
@@ -17,5 +19,7 @@ public final class App {
             .get("/", ctx -> ctx.result("Hello World"))
             .start(8000);
 
+        UserController loginController = new UserController();
+        loginController.mapEndpoints(app);
     }
 }

@@ -5,10 +5,10 @@ import java.sql.*;
 import java.util.List;
 import java.util.LinkedList;
 public class PostsRepo {
-    private List<Post> Posts = new LinkedList<Post>();
+    private List<Post> AllPosts = new LinkedList<Post>();
     
     public PostsRepo(){
-        this.Posts = new LinkedList<Post>();
+        this.AllPosts = new LinkedList<Post>();
         this.FillRepoFromDatabase();
     }
 
@@ -20,7 +20,7 @@ public class PostsRepo {
 
     //can be expanded upon depending on how we want posts to be displayed
     public List<Post> GetAllPosts(){
-        return Posts;//this seems like it might be a bad idea somehow
+        return AllPosts;//this seems like it might be a bad idea somehow
     } 
 
 
@@ -28,19 +28,34 @@ public class PostsRepo {
 
     //database
     private void FillRepoFromDatabase(){
-        //TODO:add sql
-        //select * from ...
+        //TODO:deal with date/timestamp datatype conflict
+        String sql = "select * from posts";
+        try (Connection con = ConnectionUtil.getConnection()){
+            PreparedStatement prstmt = con.prepareStatement(sql);
+            ResultSet result = prstmt.executeQuery();
+
+            while(result.next()){
+                Post newpost = new Post();
+                //keys aren't implemented into the model yet
+                //newpost.setPostID(result.getInt(1))
+                //newpost.setUserID(result.getInt(2))
+                newpost.setContent(result.getString(3));
+                newpost.settStamp(result.getTimestamp(4));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void AddPostToDataBase(Post post) {
-        //TODO: 
+        //TODO:deal with  date/timestamp datatype conflict
         String sql = "insert into post (userid, postcontent, timeofpost ) values(?, ?, ?)";
         try (Connection con = ConnectionUtil.getConnection()){
             PreparedStatement prstmt = con.prepareStatement(sql);
-
+            //keys aren't implemented into the model yet
             //prstmt.setInt(1, post.getuserid); 
             prstmt.setString(2, post.getContent());
-            //prstmt.setTimestamp(3, post.gettStamp());
+            prstmt.setTimestamp(3, post.gettStamp());
             //date or timestamp?
 
             prstmt.execute();
@@ -52,6 +67,6 @@ public class PostsRepo {
 
     //repo
     private void AddPostToRepo(Post post) {
-        this.Posts.add(post);
+        this.AllPosts.add(post);
     }
 }

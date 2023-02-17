@@ -26,7 +26,7 @@ public class LoginCredsRepo {
         this.RegisterToAccountRepo(Cred);
     }
 
-    //returns LoginCred from the database that matches the credentials of the input LoginCreds; EI, one with a userID.
+    //returns LoginCred from the database that matches the credentials of the input LoginCreds.
     //still does a bit of validation, but that can still be done elsewhere,  then we can get rid of this horribly ugly if-statement
     public LoginCred Login(LoginCred Cred){
         LoginCred realCreds = null;
@@ -41,15 +41,18 @@ public class LoginCredsRepo {
 
     //methods to split up database and non-database interactions
     private void FillRepoFromDatabase(){
-        String sql = "select useremail, userpassword from logincredentials";
+        String sql = "select * from logincredentials";
         try (Connection con = ConnectionUtil.getConnection()){
             PreparedStatement prstmt = con.prepareStatement(sql);
             ResultSet result = prstmt.executeQuery();
 
             while(result.next()){
                 LoginCred newCred = new LoginCred();
-                newCred.setEmail(result.getString(1));
-                newCred.setPassword(result.getString(2));
+                //keys aren't implemented into the model yet
+                //newCred.setLoginID(result.getint(1));
+                newCred.setEmail(result.getString(2));
+                newCred.setPassword(result.getString(3));
+                //newCred.setUserID(result.getint(4));
                 AllLoginCreds.put(newCred.getEmail(), newCred);
             }
         }catch (Exception e){

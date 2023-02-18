@@ -4,7 +4,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.revature.model.Account;
 import com.revature.model.LoginCred;
-import com.revature.repositories.AccountRepo;
+import com.revature.repositories.LoginCredsRepo;
 
 public class Service {
     //perhaps make a repo in a constructor? or make a static repo? check on that later
@@ -13,14 +13,15 @@ public class Service {
     //Will almost certainly need a return type later
     public Account loginUser(String jsonLogin){
         ///More shell code
-        Account response;
-        AccountRepo repo = new AccountRepo();
+        Account response = new Account(); // Dummy Account (TODO: remove constructor once Login() is fixed)
+        LoginCredsRepo repo = new LoginCredsRepo();
 
         ObjectMapper mapper = new ObjectMapper();
 
         try {
-            LoginCred newLogin = mapper.readValue(jsonLogin, LoginCred.class);
-            response = repo.Login(newLogin.getEmail(), newLogin.getPassword());
+            LoginCred newLoginCred = mapper.readValue(jsonLogin, LoginCred.class);
+            // TODO: Receive Account from LoginCredsRepo.Login()
+            //response = repo.Login(newLoginCred);
         } catch (Exception e) {
             // TODO: handle exception
         } 

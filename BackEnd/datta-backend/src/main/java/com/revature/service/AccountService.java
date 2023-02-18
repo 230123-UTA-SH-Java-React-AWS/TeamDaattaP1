@@ -42,7 +42,16 @@ public class AccountService {
     }
 
     public void changeAccountInfo(String jsonAccount){
-        //Skeleton
+        /* TODO: Change Account Info: -TS
+         * 
+         * 1. Check to make sure the user is logged in
+         * 
+         * 2. Create an Account from the jsonAccount
+         * 
+         * 3. Send the Account to the AccountRepo to update accounts
+         * 
+         * 4. If the Password is being changed, instead of Account use LoginCred
+         */
     }
     ///Maybe a convert from string method here, or several as needed
 }

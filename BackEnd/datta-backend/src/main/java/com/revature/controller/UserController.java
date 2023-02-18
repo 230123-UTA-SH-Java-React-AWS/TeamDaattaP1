@@ -46,7 +46,7 @@ public class UserController{
                 user.setLastName("user");
                 // Account user = userService.loginUser(context.body());
 
-                // set the user object into an HTTPSession object
+                // set the user object into an HTTPSession object TODO: Teagan, make this into a JWT Token instead -TS
                 HttpSession session = context.req.getSession(); // get the HTTPSession (there is a cookie utilized by the client)
                 // to identify the httpSession object associated with the client
                 session.setAttribute("user", user);
@@ -66,7 +66,7 @@ public class UserController{
 
         app.post("/logout", (context) ->{
             // invalidate an active HTTPSession
-            context.req.getSession().invalidate();
+            context.req.getSession().invalidate(); // TODO: JWT Token pt.2
             context.result("Logged out account.");
             context.status(200);
         });

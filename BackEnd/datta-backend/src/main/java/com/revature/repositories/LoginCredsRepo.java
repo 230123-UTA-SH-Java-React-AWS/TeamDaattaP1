@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 public class LoginCredsRepo {
 
+    // TODO: Map<String, String> (<email_string, passw_string>) -TS
     private Map<String, LoginCred> AllLoginCreds;
 
     public LoginCredsRepo(){

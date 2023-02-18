@@ -12,23 +12,38 @@ public class PostController {
     private PostService postService = new PostService();
 
     public void mapEndpoints(Javalin app) {
-        app.get("/post", (context) ->{
+
+
+        /* 
+         * ================================================================================
+         * ----------------------------------- P O S T S ----------------------------------
+         * ================================================================================
+         */
+
+
+        // ------------------------------ GET ALL POSTS FOR USER ------------------------------
+
+        app.get("/post", (context) -> {
             // get the logged in user
             HttpSession httpSession = context.req.getSession();
             Account user = (Account) httpSession.getAttribute("user");
 
             //check if user is logged in
             if(user != null) {
-                //TODO: Return List of Posts from PostService.getAllPosts();
-                //List<Post> postList = postService.getAllPosts();
+                //TODO: Return List of Posts from PostService.getAllPosts(user);
+                //List<Post> postList = postService.getAllPosts(user);
 
                 //context.json(postList);
                 context.status(200);
             } else {
                 context.result("You are not logged in");
-                context.status(401); //Error status
+                context.status(401); //Error status  
             }
         });
+
+
+
+        // ------------------------------ CREATE A POST ------------------------------
 
         app.post("/post", (context) -> {
             String postJson = context.body();
@@ -43,6 +58,37 @@ public class PostController {
                 context.status(500); // 5xx server errors - 500 Internal Server Error
             }
         });
+
+
+
+        // ------------------------------ LIKE A POST ------------------------------
+        app.put("/post", (context) -> {
+            //String postJson = context.body();
+
+            try{
+                // TODO: PostService.likePost(postJson);
+                //postService.likePost(postJson);
+
+                context.result("Post successfully liked.");
+                context.status(200);
+            } catch (Exception e){
+                context.result(e.getMessage());
+                context.status(500);
+            }
+        });
+
+
+
+
+        /* 
+         * ================================================================================
+         * ------------------------------ C O M M E N T S ---------------------------------
+         * ================================================================================
+         */
+
+
+        // ------------------------------ CREATE A COMMENT ------------------------------
+        // I have not created a get method for comments because I am assuming they will be served with the posts (see GET ALL POSTS^^)
 
         app.post("/comment", (context) -> {
             String commentJson = context.body();

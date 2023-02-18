@@ -11,8 +11,11 @@ public class UserController{
     
     private AccountService userService = new AccountService();
 
-    // UserController - handles user login, logout, and register HTTP requests
+    // --------------- UserController - handles user login, logout, and register HTTP requests ---------------
     public void mapEndpoints(Javalin app) {
+
+        // ------------------------------ REGISTER A NEW USER ------------------------------
+
         app.post("/register", (context) ->{
             String userJson = context.body();
 
@@ -28,7 +31,10 @@ public class UserController{
             }
         });
 
-        // login HTTP request - to enter an user account
+
+
+        // ------------------------------ LOGIN EXISTING USER ------------------------------
+
         app.post("/login", (context) ->{
 
             // System.out.println(credentials);
@@ -54,12 +60,40 @@ public class UserController{
             }
         });
 
-        // logout HTTP request - to exit logged-in user account
+
+
+        // ------------------------------ LOGOUT USER (IF LOGGED IN) ------------------------------
+
         app.post("/logout", (context) ->{
             // invalidate an active HTTPSession
             context.req.getSession().invalidate();
             context.result("Logged out account.");
             context.status(200);
+        });
+
+
+        
+        // // ------------------------------ SEARCH FOR OTHER PEOPLE ------------------------------
+
+        app.get("/users", (context) ->{
+            String searchJson = context.body();
+
+            HttpSession httpSession = context.req.getSession();
+            Account user = (Account) httpSession.getAttribute("user");
+
+            //check if user is logged in
+            if(user != null) {
+                // Try searching for accounts like 'searchJson'
+
+                //TODO: Return List of Users from UserService.searchUsers(searchJson);
+                //List<User> userList = userService.searchUsers(searchJson);
+
+                //context.json(userList);
+                context.status(200);
+            } else {
+                context.result("You are not logged in");
+                context.status(401); //Error status  
+            }
         });
     }
 }

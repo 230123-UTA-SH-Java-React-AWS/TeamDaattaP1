@@ -47,7 +47,7 @@ public class PostsRepo {
     }
 
     private void AddPostToDataBase(Post post) {
-        String sql = "insert into post (userid, postcontent, timeofpost ) values(?, ?, ?)";
+        String sql = "insert into posts (userid, postcontent, timeofpost ) values(?, ?, ?)";
         try (Connection con = ConnectionUtil.getConnection()){
             PreparedStatement prstmt = con.prepareStatement(sql);
             //keys aren't implemented into the model yet

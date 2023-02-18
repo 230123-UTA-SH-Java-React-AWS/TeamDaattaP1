@@ -25,7 +25,7 @@ public class LoginCredsRepo {
         this.RegisterToAccountRepo(Cred);
     }
 
-    // TODO: Can you set this up to return an Account object instead of the LoginCred? -TS
+    // TODO: Can you do magic to return an Account object instead of a LoginCred? -TS
     //returns LoginCred from the database that matches the credentials of the input LoginCreds.
     //still does a bit of validation, but that can still be done elsewhere,  then we can get rid of this horribly ugly if-statement
     public LoginCred Login(LoginCred Cred){

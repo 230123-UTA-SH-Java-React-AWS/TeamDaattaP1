@@ -40,7 +40,7 @@ public class UserController{
             // System.out.println(credentials);
 
             try{
-                // TODO: Dummy User Value - loginUser return Account
+                // TODO: Dummy User Value - loginUser return Account -TS
                 Account user = new Account(); 
                 user.setFirstName("default");
                 user.setLastName("user");
@@ -85,7 +85,7 @@ public class UserController{
             if(user != null) {
                 // Try searching for accounts like 'searchJson'
 
-                //TODO: Return List of Users from UserService.searchUsers(searchJson);
+                //TODO: Return List of Users from UserService.searchUsers(searchJson) -TS
                 //List<User> userList = userService.searchUsers(searchJson);
 
                 //context.json(userList);

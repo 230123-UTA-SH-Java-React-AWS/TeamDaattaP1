@@ -28,7 +28,6 @@ public class PostsRepo {
 
     //database
     private void FillRepoFromDatabase(){
-        //TODO:deal with date/timestamp datatype conflict
         String sql = "select * from posts";
         try (Connection con = ConnectionUtil.getConnection()){
             PreparedStatement prstmt = con.prepareStatement(sql);
@@ -48,7 +47,6 @@ public class PostsRepo {
     }
 
     private void AddPostToDataBase(Post post) {
-        //TODO:deal with  date/timestamp datatype conflict
         String sql = "insert into post (userid, postcontent, timeofpost ) values(?, ?, ?)";
         try (Connection con = ConnectionUtil.getConnection()){
             PreparedStatement prstmt = con.prepareStatement(sql);

@@ -30,7 +30,7 @@ public class PostController {
 
             //check if user is logged in
             if(user != null) {
-                //TODO: Return List of Posts from PostService.getAllPosts(user);
+                //TODO: Return List of Posts from PostService.getAllPosts(user) -TS
                 //List<Post> postList = postService.getAllPosts(user);
 
                 //context.json(postList);
@@ -66,7 +66,7 @@ public class PostController {
             //String postJson = context.body();
 
             try{
-                // TODO: PostService.likePost(postJson);
+                // TODO: Create PostService.likePost(postJson) -TS
                 //postService.likePost(postJson);
 
                 context.result("Post successfully liked.");

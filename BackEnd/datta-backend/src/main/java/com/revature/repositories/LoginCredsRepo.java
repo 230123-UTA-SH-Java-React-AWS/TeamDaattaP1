@@ -18,7 +18,6 @@ public class LoginCredsRepo {
         try {
             this.RegisterToDatabase(Cred);
         } catch (SQLException e) {
-            // TODO: handle exception
             e.printStackTrace();
             System.out.println("unable to register account, account name may already be taken");
             return;//stop here if an exception was thrown, do not add to the repo
@@ -26,7 +25,7 @@ public class LoginCredsRepo {
         this.RegisterToAccountRepo(Cred);
     }
 
-    // TODO: Can you set this up to return an Account object instead of the LoginCred?
+    // TODO: Can you set this up to return an Account object instead of the LoginCred? -TS
     //returns LoginCred from the database that matches the credentials of the input LoginCreds.
     //still does a bit of validation, but that can still be done elsewhere,  then we can get rid of this horribly ugly if-statement
     public LoginCred Login(LoginCred Cred){

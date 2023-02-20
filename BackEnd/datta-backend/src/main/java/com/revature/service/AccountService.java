@@ -1,5 +1,9 @@
 package com.revature.service;
 
+import java.io.IOException;
+
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.revature.model.Account;
@@ -7,23 +11,21 @@ import com.revature.model.LoginCred;
 import com.revature.repositories.AccountsRepo;
 import com.revature.repositories.LoginCredsRepo;
 
-public class AccountService {
+public class AccountService implements AccountServiceInterface, ServiceGenerics{
     //perhaps make a repo in a constructor? or make a static repo? check on that later
     //static repos are what makes sense to me -DP
+    //I agree on the static repo, just feels better -AB
     private static LoginCredsRepo LCrepo = new LoginCredsRepo();
     private static AccountsRepo Accrepo = new AccountsRepo();
 
     ///Communicates with the repo to check if inputted credentials are in the database
     //Will almost certainly need a return type later
-    public Account loginUser(String jsonLogin) throws Exception{ //We can throw an exception to UserController here -TS
+    @Override
+    public Account loginUser(String jsonLogin){ //We can throw an exception to UserController here -TS
         ///More shell code
         Account response = new Account(); // Dummy Account TODO: remove constructor once Login() returns Account -TS
-
-
-        ObjectMapper mapper = new ObjectMapper();
-
     
-        LoginCred newLoginCred = mapper.readValue(jsonLogin, LoginCred.class);
+        LoginCred newLoginCred = convertToObject(jsonLogin, LoginCred.class);
         // TODO: Receive Account from LoginCredsRepo.Login() -TS
         //In theory it, works like this instead:
         int id = LCrepo.Login(newLoginCred);
@@ -32,6 +34,7 @@ public class AccountService {
         return response;
     }
 
+    @Override
     public void registerUser(String jsonUser){
         /* TODO: Register User: -TS
          * 
@@ -47,6 +50,7 @@ public class AccountService {
          */
     }
 
+    @Override
     public void changeAccountInfo(String jsonAccount){
         /* TODO: Change Account Info: -TS
          * 
@@ -60,4 +64,21 @@ public class AccountService {
          */
     }
     ///Maybe a convert from string method here, or several as needed
+
+    @Override
+    public <T> T convertToObject(String json, Class<T> returnType) {
+        ObjectMapper mapper = new ObjectMapper();
+        T newObject = null;
+
+        try {
+            newObject = mapper.readValue(json, returnType);
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return newObject;
+    }
 }

@@ -5,7 +5,7 @@ public class Account {
     private String lastName;
     private java.sql.Date dob;
     private String bio;
-    //private int account id
+    private int account_id;
     
     public String getFirstName() {
         return firstName;
@@ -30,6 +30,12 @@ public class Account {
     }
     public void setBio(String bio) {
         this.bio = bio;
+    }
+    public int getAccount_id() {
+        return account_id;
+    }
+    public void setAccount_id(int account_id) {
+        this.account_id = account_id;
     }
 
     public Account(){

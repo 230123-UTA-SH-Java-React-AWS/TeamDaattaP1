@@ -32,7 +32,7 @@ public class LoginCredsRepo {
     // yes, but I should probably be passing the account forign key to give to the accountsRepo so that it doesn't need to query the database directly. Abracadabra -DP
     //returns Account from the database that matches the credentials of the input LoginCreds.
     //still does a bit of validation, but that can still be done elsewhere,  then we can get rid of this horribly ugly if-statement
-    public Account Login(LoginCred Cred){
+    public int Login(LoginCred Cred){
         LoginCred realCreds = null;
         if (AllLoginCreds.containsKey(Cred.getEmail()) //login exists
              && AllLoginCreds.get(Cred.getEmail()).getPassword().equals(Cred.getPassword()) //password matches
@@ -40,6 +40,7 @@ public class LoginCredsRepo {
                 realCreds = AllLoginCreds.get(Cred.getEmail());
         }
         //this is the similar sql used to fill the accountsRepo
+        /*
         Account newAcc = new Account();
         String sql = "select * from accounts where accountid = ?";
         try (Connection con = ConnectionUtil.getConnection()){
@@ -57,9 +58,10 @@ public class LoginCredsRepo {
         }catch (Exception e){
             e.printStackTrace();
         }
+        */
         //
 
-        return newAcc;
+        return realCreds.getCredential_id(); //realCreds.account_id is currently always undefined(null)
     }
 
 

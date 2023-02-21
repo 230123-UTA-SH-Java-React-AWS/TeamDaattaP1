@@ -21,7 +21,7 @@ public class UserController{
 
             // Try creating the new Account
             try{
-                userService.registerUser(userJson);
+                userService.registerUser(userJson); // TODO: gives an exception?
 
                 context.result("Account successfully created.");
                 context.status(201);    // 2xx success - 201 Created

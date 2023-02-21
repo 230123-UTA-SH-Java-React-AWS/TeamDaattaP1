@@ -40,7 +40,7 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
     }
 
     @Override
-    public void registerUser(String jsonUser){
+    public void registerUser(String jsonUser) {
         /* TODO: Register User: -TS
          * 
          * 1. Check to make sure the email is not already registered

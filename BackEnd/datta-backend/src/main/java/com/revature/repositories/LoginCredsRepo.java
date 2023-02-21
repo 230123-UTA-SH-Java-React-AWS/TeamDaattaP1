@@ -2,14 +2,9 @@ package com.revature.repositories;
 import java.sql.*;
 import com.revature.util.*;
 import com.revature.model.LoginCred;
-import com.revature.model.Account;
 import java.util.HashMap;
-import java.util.Map;
 public class LoginCredsRepo {
 
-    //TODO: implement interfaces
-
-    // TODO: Map<String, String> (<email_string, passw_string>) -TS
     // Changing it to this would mean that we wouldn't be able to access other parts of the LoginCred objects(the forign and primary keys) -DP
     private HashMap<String, LoginCred> AllLoginCreds;
 

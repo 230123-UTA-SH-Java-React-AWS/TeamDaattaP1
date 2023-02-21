@@ -8,8 +8,10 @@ import {
   toggleThemeLight,
 } from "../features/darkMode/themeSlice";
 import original from "react95/dist/themes/original";
+import { Link } from "react-router-dom";
 
 function Navbar() {
+  //toggles profile and posts buttons once login and signup are clicked
   const [open, setOpen] = useState(false);
 
   //redux theme
@@ -22,19 +24,18 @@ function Navbar() {
         <div style={{ position: "relative", display: "inline-block" }}>
           {!open && (
             <>
-              <NavButton
-                primary
-                onClick={() => setOpen(!open)}
-                active={open}
-                style={{
-                  fontWeight: "bold",
-                }}
-              >
-                Log In
-              </NavButton>
-              <NavButton style={{ paddingLeft: 6, paddingRight: 6 }}>
-                Sign up
-              </NavButton>
+              <Link to={"/login"}>
+                <NavButton
+                  primary
+                  onClick={() => setOpen(!open)}
+                  active={open}
+                  style={{
+                    fontWeight: "bold",
+                  }}
+                >
+                  Log In
+                </NavButton>
+              </Link>
             </>
           )}
           {open && (

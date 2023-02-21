@@ -10,6 +10,8 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
+import Root from "./pages/Root";
+import Post from "./components/Post";
 
 //REACT
 const container = document.getElementById("root")!;
@@ -17,7 +19,12 @@ const root = createRoot(container);
 
 // ROUTER
 const router = createBrowserRouter(
-  createRoutesFromElements(<Route path="/" element={<App />}></Route>)
+  createRoutesFromElements(
+    <Route path="/" element={<Root />}>
+      <Route index element={<App />} />
+      <Route path="/login" element={<Post />} />
+    </Route>
+  )
 );
 
 root.render(

@@ -45,6 +45,4 @@ const PostWindow = styled(Window)`
     align-items: center;
     justify-content: space-between;
   }
-  
-  }
 `;

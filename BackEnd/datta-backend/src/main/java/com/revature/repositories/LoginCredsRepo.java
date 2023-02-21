@@ -11,14 +11,14 @@ public class LoginCredsRepo {
 
     // TODO: Map<String, String> (<email_string, passw_string>) -TS
     // Changing it to this would mean that we wouldn't be able to access other parts of the LoginCred objects(the forign and primary keys) -DP
-    private Map<String, LoginCred> AllLoginCreds;
+    private HashMap<String, LoginCred> AllLoginCreds;
 
     public LoginCredsRepo(){
         this.AllLoginCreds = new HashMap<String, LoginCred>();
         this.FillRepoFromDatabase();
     }
 
-    //for registering a new login
+    //for registering new login credentials
     public void RegisterLogin(LoginCred Cred){
         try {
             this.RegisterToDatabase(Cred);
@@ -30,42 +30,10 @@ public class LoginCredsRepo {
         this.RegisterToLoginCredsRepo(Cred);
     }
 
-    // Can you do magic to return an Account object instead of a LoginCred? -TS
-    // yes, but I should probably be passing the account forign key to give to the accountsRepo so that it doesn't need to query the database directly. Abracadabra -DP
-    //returns Account from the database that matches the credentials of the input LoginCreds.
-    //still does a bit of validation, but that can still be done elsewhere,  then we can get rid of this horribly ugly if-statement
-    public int Login(LoginCred Cred){
-        LoginCred realCreds = null;
-        if (AllLoginCreds.containsKey(Cred.getEmail()) //login exists
-             && AllLoginCreds.get(Cred.getEmail()).getPassword().equals(Cred.getPassword()) //password matches
-             ){
-                realCreds = AllLoginCreds.get(Cred.getEmail());
-        }
-        //this is the similar sql used to fill the accountsRepo
-        /*
-        Account newAcc = new Account();
-        String sql = "select * from accounts where accountid = ?";
-        try (Connection con = ConnectionUtil.getConnection()){
-            PreparedStatement prstmt = con.prepareStatement(sql);
-            prstmt.setInt(1, realCreds.getAccount_id());
-            ResultSet result = prstmt.executeQuery();
-            while(result.next()){
-                
-                newAcc.setAccount_id(result.getInt(1));
-                newAcc.setFirstName(result.getString(2));
-                newAcc.setLastName(result.getString(3));
-                newAcc.setDob(result.getDate(4));
-                newAcc.setBio(result.getString(5));
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        */
-        //
-
-        return realCreds.getCredential_id(); //realCreds.account_id is currently always undefined(null)
+    //used for login
+    public HashMap<String, LoginCred> getAll(){
+        return this.AllLoginCreds;
     }
-
 
     //methods to split up database and non-database interactions
     private void FillRepoFromDatabase(){

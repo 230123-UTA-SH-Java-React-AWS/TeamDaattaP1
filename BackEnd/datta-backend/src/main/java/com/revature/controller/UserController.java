@@ -1,5 +1,7 @@
 package com.revature.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import com.revature.model.Account;
@@ -40,11 +42,7 @@ public class UserController{
             // System.out.println(credentials);
 
             try{
-                // TODO: Dummy User Value - loginUser return Account -TS
-                Account user = new Account(); 
-                user.setFirstName("default");
-                user.setLastName("user");
-                // Account user = userService.loginUser(context.body());
+                Account user = userService.loginUser(context.body());
 
                 // set the user object into an HTTPSession object TODO: Teagan, make this into a JWT Token instead -TS
                 HttpSession session = context.req.getSession(); // get the HTTPSession (there is a cookie utilized by the client)
@@ -52,6 +50,7 @@ public class UserController{
                 session.setAttribute("user", user);
 
                 context.result("Welcome " + user.getFirstName() + " " + user.getLastName());
+                context.json(user);
                 context.status(200);
             }
             catch (Exception e){
@@ -84,11 +83,9 @@ public class UserController{
             //check if user is logged in
             if(user != null) {
                 // Try searching for accounts like 'searchJson'
+                List<Account> userList = userService.searchUsers(searchJson);
 
-                //TODO: Return List of Users from UserService.searchUsers(searchJson) -TS
-                //List<User> userList = userService.searchUsers(searchJson);
-
-                //context.json(userList);
+                context.json(userList);
                 context.status(200);
             } else {
                 context.result("You are not logged in");

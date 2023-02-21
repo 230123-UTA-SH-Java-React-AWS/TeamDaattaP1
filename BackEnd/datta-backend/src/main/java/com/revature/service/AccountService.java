@@ -2,6 +2,7 @@ package com.revature.service;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -69,8 +70,15 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
          */
     }
     ///Maybe a convert from string method here, or several as needed
+    
+    //TODO: Return List of Users from UserService.searchUsers(searchJson) -TS
+    @Override
+    public List<Account> searchUsers(String jsonSearch) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'searchUsers'");
+    }
 
-    //Not sure on the syntax here
+    //Not sure on the syntax here (Looks like it works -TS)
     @Override
     public <T> T convertToObject(String json, Class <T> returnType) {
         ObjectMapper mapper = new ObjectMapper();
@@ -87,4 +95,5 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
         }
         return newObject;
     }
+
 }

@@ -1,6 +1,7 @@
 package com.revature.service;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -22,15 +23,19 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
     //Will almost certainly need a return type later
     @Override
     public Account loginUser(String jsonLogin){ //We can throw an exception to UserController here -TS
-        ///More shell code
-        Account response = new Account(); // Dummy Account TODO: remove constructor once Login() returns Account -TS
     
         LoginCred newLoginCred = convertToObject(jsonLogin, LoginCred.class);
-        // TODO: Receive Account from LoginCredsRepo.Login() -TS
-        //In theory it, works like this instead:
-        int id = LCrepo.Login(newLoginCred);
-        response = Accrepo.getAccount(id);
-        //is that's ok? -DP
+
+
+        HashMap<String, LoginCred> AllLoginCreds = LCrepo.getAll();
+        LoginCred realCreds = null;
+        if (AllLoginCreds.containsKey(newLoginCred.getEmail()) //login exists
+             && AllLoginCreds.get(newLoginCred.getEmail()).getPassword().equals(newLoginCred.getPassword()) //password matches
+             ){
+                realCreds = AllLoginCreds.get(newLoginCred.getEmail());
+        }
+        Account response = new Account();
+        response = Accrepo.getAccount(realCreds.getCredential_id());
         return response;
     }
 

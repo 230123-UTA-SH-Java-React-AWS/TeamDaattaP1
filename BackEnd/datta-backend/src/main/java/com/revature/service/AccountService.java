@@ -65,8 +65,9 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
     }
     ///Maybe a convert from string method here, or several as needed
 
+    //Not sure on the syntax here
     @Override
-    public <T> T convertToObject(String json, Class<T> returnType) {
+    public <T> T convertToObject(String json, Class <T> returnType) {
         ObjectMapper mapper = new ObjectMapper();
         T newObject = null;
 

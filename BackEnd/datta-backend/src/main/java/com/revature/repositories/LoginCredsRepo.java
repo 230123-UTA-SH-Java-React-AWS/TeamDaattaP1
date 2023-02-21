@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 public class LoginCredsRepo {
 
+    //TODO: implement interfaces
+
     // TODO: Map<String, String> (<email_string, passw_string>) -TS
     // Changing it to this would mean that we wouldn't be able to access other parts of the LoginCred objects(the forign and primary keys) -DP
     private Map<String, LoginCred> AllLoginCreds;
@@ -84,6 +86,7 @@ public class LoginCredsRepo {
             e.printStackTrace();
         }
     }
+    //TODO: Change to version in interface -ab
     private void RegisterToDatabase(LoginCred Cred) throws SQLException{
         String sql = "insert into logincredentials (useremail, userpassword) values(?, ?)";
         try (Connection con = ConnectionUtil.getConnection()){
@@ -98,7 +101,7 @@ public class LoginCredsRepo {
         }
     }
 
-
+    //What is the differenct between these two functions? -ab
 
     private void RegisterToLoginCredsRepo(LoginCred Cred){
         String sql = "SELECT MAX(loginid) FROM logincredentials";//the highest id, should be the one just inserted into the databse

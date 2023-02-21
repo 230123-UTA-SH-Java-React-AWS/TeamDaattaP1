@@ -25,6 +25,7 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
     @Override
     public Account loginUser(String jsonLogin){ //We can throw an exception to UserController here -TS
     
+        System.out.println("We're logging in a user");
         LoginCred newLoginCred = convertToObject(jsonLogin, LoginCred.class);
 
 
@@ -34,9 +35,12 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
              && AllLoginCreds.get(newLoginCred.getEmail()).getPassword().equals(newLoginCred.getPassword()) //password matches
              ){
                 realCreds = AllLoginCreds.get(newLoginCred.getEmail());
+                System.out.println("The password matched woohoo");
         }
         Account response = new Account();
-        response = Accrepo.getAccount(realCreds.getCredential_id());
+
+        //TODO: Issue here if password doesn't match (null.getCredential_id()) -TS
+        //response = Accrepo.getAccount(realCreds.getCredential_id());
         return response;
     }
 

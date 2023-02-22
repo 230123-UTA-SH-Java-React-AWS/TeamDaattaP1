@@ -3,6 +3,7 @@ package com.revature.service;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -36,11 +37,12 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
              ){
                 realCreds = AllLoginCreds.get(newLoginCred.getEmail());
                 System.out.println("The password matched woohoo");
+        } else {
+            RuntimeException e = new NoSuchElementException("Login or Password is incorrect");
+            throw e;
         }
         Account response = new Account();
-
-        //TODO: Issue here if password doesn't match (null.getCredential_id()) -TS
-        //response = Accrepo.getAccount(realCreds.getCredential_id());
+        response = Accrepo.getAccount(realCreds.getCredential_id());
         return response;
     }
 

@@ -1,6 +1,7 @@
 package com.revature.controller;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpSession;
 
@@ -52,6 +53,9 @@ public class UserController{
                 context.result("Welcome " + user.getFirstName() + " " + user.getLastName());
                 context.json(user);
                 context.status(200);
+            } catch (NoSuchElementException e){//login or password was incorrect
+                context.status(404);
+                context.result(e.getMessage());
             }
             catch (Exception e){
                 context.status(400);

@@ -4,11 +4,7 @@ import styled from "styled-components";
 function Post() {
   return (
     <>
-      <PostWindow
-        resizable
-        className="window"
-        style={{ marginLeft: 90, marginBottom: 20 }}
-      >
+      <PostWindow resizable className="window" style={{ marginBottom: 20 }}>
         <WindowHeader className="window-title">
           <span>Example Post Title</span>
           <Button>&#10006;</Button>

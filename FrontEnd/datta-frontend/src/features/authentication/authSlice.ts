@@ -19,6 +19,11 @@ interface LoginPayload {
   password: string;
 }
 
+interface RegisterPayload {
+  email: string;
+  password: string;
+}
+
 const initialState: AuthState = {
   isAuthenticated: !!getToken(),
   user: null,
@@ -57,6 +62,21 @@ const authSlice = createSlice({
       state.error = null;
       state.token = action.payload;
     },
+    registerSuccess: (
+      state,
+      action: PayloadAction<{ user: User; token: string }>
+    ) => {
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.error = null;
+      state.token = action.payload.token;
+    },
+    registerFailure: (state, action: PayloadAction<string>) => {
+      state.isAuthenticated = false;
+      state.user = null;
+      state.error = action.payload;
+      state.token = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(loginAsync.fulfilled, (state, action) => {
@@ -71,14 +91,33 @@ const authSlice = createSlice({
       state.error = action.error.message || "Something went wrong.";
       state.token = null;
     });
+    builder.addCase(registerAsync.fulfilled, (state, action) => {
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.error = null;
+      state.token = action.payload.token;
+    });
+    builder.addCase(registerAsync.rejected, (state, action) => {
+      state.isAuthenticated = false;
+      state.user = null;
+      state.error = action.error.message || "Something went wrong.";
+      state.token = null;
+    });
   },
 });
 
-export const { loginSuccess, loginFailure, logoutSuccess, loginWithToken } =
-  authSlice.actions;
+export const {
+  loginSuccess,
+  loginFailure,
+  logoutSuccess,
+  loginWithToken,
+  registerFailure,
+  registerSuccess,
+} = authSlice.actions;
 
 export default authSlice.reducer;
 
+//========LOGIN============
 export const loginAsync = createAsyncThunk(
   "auth/login",
   async (loginPayload: LoginPayload) => {
@@ -100,6 +139,32 @@ export const loginAsync = createAsyncThunk(
       return { user, token };
     } else {
       throw new Error("Failed to log in");
+    }
+  }
+);
+
+//=========REGISTER=========
+export const registerAsync = createAsyncThunk(
+  "auth/register",
+  async (registerPayload: RegisterPayload) => {
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(registerPayload),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      const user = data.user;
+      const token = response.headers.get("Authorization") || null;
+      // Save the token to localStorage
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+      return { user, token };
+    } else {
+      throw new Error("Failed to register");
     }
   }
 );

@@ -12,6 +12,8 @@ import {
 } from "react-router-dom";
 import Root from "./pages/Root";
 import Post from "./components/Post";
+import Profile from "./pages/Profile";
+import Authenticate from "./pages/Authenticate";
 
 //REACT
 const container = document.getElementById("root")!;
@@ -22,7 +24,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
       <Route index element={<App />} />
-      <Route path="/login" element={<Post />} />
+      <Route path="/login" element={<Authenticate />} />
+      <Route path="/profile" element={<Profile />} />
     </Route>
   )
 );

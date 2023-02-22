@@ -40,17 +40,20 @@ function Navbar() {
           )}
           {open && (
             <>
-              <NavButton
-                primary
-                onClick={() => setOpen(!open)}
-                style={{
-                  fontWeight: "bold",
-                }}
-              >
-                Log Out
-              </NavButton>
-              <NavButton>Profile</NavButton>
-              <NavButton>Posts</NavButton>
+              <Link to={"/"}>
+                <NavButton
+                  primary
+                  onClick={() => setOpen(!open)}
+                  style={{
+                    fontWeight: "bold",
+                  }}
+                >
+                  Log Out
+                </NavButton>
+              </Link>
+              <Link to={"/profile"}>
+                <NavButton>Profile</NavButton>
+              </Link>
             </>
           )}
           {theme == original ? (

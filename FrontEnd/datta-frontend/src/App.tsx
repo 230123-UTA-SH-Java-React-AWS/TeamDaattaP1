@@ -1,4 +1,3 @@
-import "./App.css";
 import { useAxios } from "./hooks/useAxios";
 
 export interface testPokeApiResponse {
@@ -24,11 +23,11 @@ function App() {
   if (!data) return <p>Data was null</p>;
 
   return (
-    <div className="App">
+    <>
       {data.results.map((p) => (
         <h3 key={p.name}>{p.name}</h3>
       ))}
-    </div>
+    </>
   );
 }
 

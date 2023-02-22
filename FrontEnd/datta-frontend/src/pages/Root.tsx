@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import { selectTheme } from "../features/darkMode/themeSlice";
 import { useAppSelector } from "../redux/hooks";
 import { Outlet } from "react-router-dom";
+import "../App.css";
 
 function Root() {
   // WIN 95 styles
@@ -35,7 +36,9 @@ function Root() {
       <GlobalStyles />
       <ThemeProvider theme={theme}>
         <Navbar />
-        <Outlet />
+        <div className="App">
+          <Outlet />
+        </div>
       </ThemeProvider>
     </>
   );

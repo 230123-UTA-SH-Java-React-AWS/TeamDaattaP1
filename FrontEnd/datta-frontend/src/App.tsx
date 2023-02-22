@@ -1,4 +1,3 @@
-import "./App.css";
 import { useAxios } from "./hooks/useAxios";
 
 export interface testPokeApiResponse {
@@ -13,7 +12,7 @@ export interface testPokeData {
 }
 
 function App() {
-  //testing useAxios hook to fetch data
+  // testing useAxios hook to fetch data
   const [loading, data, error, request] = useAxios<testPokeApiResponse>({
     method: "GET",
     url: "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0",
@@ -22,12 +21,13 @@ function App() {
   if (loading) return <p>Loading...</p>;
   if (error !== "") return <p>{error}</p>;
   if (!data) return <p>Data was null</p>;
+
   return (
-    <div className="App">
+    <>
       {data.results.map((p) => (
         <h3 key={p.name}>{p.name}</h3>
       ))}
-    </div>
+    </>
   );
 }
 

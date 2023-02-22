@@ -4,19 +4,30 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import "./index.css";
 import {
   Route,
   RouterProvider,
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
+import Root from "./pages/Root";
+import Post from "./components/Post";
+import Profile from "./pages/Profile";
+import Authenticate from "./pages/Authenticate";
 
+//REACT
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 
+// ROUTER
 const router = createBrowserRouter(
-  createRoutesFromElements(<Route path="/" element={<App />}></Route>)
+  createRoutesFromElements(
+    <Route path="/" element={<Root />}>
+      <Route index element={<App />} />
+      <Route path="/login" element={<Authenticate />} />
+      <Route path="/profile" element={<Profile />} />
+    </Route>
+  )
 );
 
 root.render(

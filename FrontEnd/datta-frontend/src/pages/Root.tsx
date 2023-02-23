@@ -8,10 +8,8 @@ import { selectTheme } from "../features/darkMode/themeSlice";
 import { useAppSelector } from "../redux/hooks";
 import { Outlet } from "react-router-dom";
 import "../App.css";
-
-function Root() {
-  // WIN 95 styles
-  const GlobalStyles = createGlobalStyle`
+// WIN 95 styles
+const GlobalStyles = createGlobalStyle`
   @font-face {
     font-family: 'ms_sans_serif';
     src: url('${ms_sans_serif}') format('woff2');
@@ -28,7 +26,7 @@ function Root() {
     font-family: 'ms_sans_serif';
   }
 `;
-
+function Root() {
   const theme = useAppSelector(selectTheme);
 
   return (

@@ -11,7 +11,7 @@ interface AuthState {
   isAuthenticated: boolean;
   user: User | null;
   error: string | null;
-  token: string | null;
+  token: string;
 }
 
 interface LoginPayload {
@@ -28,7 +28,7 @@ const initialState: AuthState = {
   isAuthenticated: !!getToken(),
   user: null,
   error: null,
-  token: null,
+  token: "",
 };
 
 const authSlice = createSlice({
@@ -42,19 +42,19 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload.user;
       state.error = null;
-      state.token = action.payload.token;
+      state.token = action.payload.token || "";
     },
     loginFailure: (state, action: PayloadAction<string>) => {
       state.isAuthenticated = false;
       state.user = null;
       state.error = action.payload;
-      state.token = null;
+      state.token = "";
     },
     logoutSuccess: (state) => {
       state.isAuthenticated = false;
       state.user = null;
       state.error = null;
-      state.token = null;
+      state.token = "";
       localStorage.removeItem("token");
     },
     loginWithToken: (state, action: PayloadAction<string>) => {
@@ -75,7 +75,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.user = null;
       state.error = action.payload;
-      state.token = null;
+      state.token = "";
     },
   },
   extraReducers: (builder) => {
@@ -83,25 +83,25 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload.user;
       state.error = null;
-      state.token = action.payload.token;
+      state.token = action.payload.token || "";
     });
     builder.addCase(loginAsync.rejected, (state, action) => {
       state.isAuthenticated = false;
       state.user = null;
       state.error = action.error.message || "Something went wrong.";
-      state.token = null;
+      state.token = "";
     });
     builder.addCase(registerAsync.fulfilled, (state, action) => {
       state.isAuthenticated = true;
       state.user = action.payload.user;
       state.error = null;
-      state.token = action.payload.token;
+      state.token = action.payload.token || "";
     });
     builder.addCase(registerAsync.rejected, (state, action) => {
       state.isAuthenticated = false;
       state.user = null;
       state.error = action.error.message || "Something went wrong.";
-      state.token = null;
+      state.token = "";
     });
   },
 });
@@ -131,13 +131,17 @@ export const loginAsync = createAsyncThunk(
     if (response.ok) {
       const data = await response.json();
       const user = data.user;
-      const token = response.headers.get("Authorization") || null;
+      const token = response.headers.get("Authorization") || "";
       // Save the token to localStorage
       if (token) {
         localStorage.setItem("token", token);
       }
+      console.log("login post was successfull");
+
       return { user, token };
     } else {
+      console.log("failed to log in");
+
       throw new Error("Failed to log in");
     }
   }
@@ -157,7 +161,7 @@ export const registerAsync = createAsyncThunk(
     if (response.ok) {
       const data = await response.json();
       const user = data.user;
-      const token = response.headers.get("Authorization") || null;
+      const token = response.headers.get("Authorization") || "";
       // Save the token to localStorage
       if (token) {
         localStorage.setItem("token", token);

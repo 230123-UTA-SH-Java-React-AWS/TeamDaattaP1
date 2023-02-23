@@ -28,6 +28,9 @@ public class UserController{
 
                 context.result("Account successfully created.");
                 context.status(201);    // 2xx success - 201 Created
+            } catch (RuntimeException e){
+                context.result(e.getMessage()); // print exception message
+                context.status(409); // 4xx client errors - 409 Conflict
             } catch (Exception e){
                 context.result(e.getMessage()); // print exception message
                 context.status(500); // 5xx server errors - 500 Internal Server Error

@@ -72,6 +72,7 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
 
         if(Accrepo.getAccount(newAccount.getAccount_id()) == null){
              Accrepo.RegisterAccount(newAccount);
+             LCrepo.RegisterLogin(newLogin);
         } //else ??? brain melting ngl will come back to this tomorrow - ab
 
     }

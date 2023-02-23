@@ -2,6 +2,8 @@ package com.revature;
 
 import org.junit.jupiter.api.Test;
 
+import com.revature.service.AccountService;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -13,6 +15,10 @@ class AppTest {
      */
     @Test
     void testApp() {
+        AccountService service = new AccountService();
+
+        String json = "{'email' : 'garbage'}";
+        service.registerUser(json);
         assertEquals(1, 1);
     }
 }

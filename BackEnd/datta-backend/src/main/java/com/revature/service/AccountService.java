@@ -70,7 +70,7 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
         Account newAccount = convertToObject(jsonUser, Account.class);
         LoginCred newLogin = convertToObject(jsonUser, LoginCred.class);
 
-        if(Accrepo.getAccount(newAccount.getAccount_id()) == null){
+        if(LCrepo.getAll().containsKey(newLogin.getEmail())){
              Accrepo.RegisterAccount(newAccount);
              LCrepo.RegisterLogin(newLogin);
         } //else ??? brain melting ngl will come back to this tomorrow - ab

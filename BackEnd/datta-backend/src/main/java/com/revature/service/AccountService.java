@@ -1,13 +1,17 @@
 package com.revature.service;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
 import com.revature.model.Account;
 import com.revature.model.LoginCred;
@@ -60,6 +64,16 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
          * 
          * 5. Send the LoginCred to the LoginCredsRepo to be stored in the logincredentials table
          */
+
+         //needs testing, assumes that jsonUser has both account info and login cred info
+         //not sure if convertToObject will work like this. let me know if it doesn't -ab
+        Account newAccount = convertToObject(jsonUser, Account.class);
+        LoginCred newLogin = convertToObject(jsonUser, LoginCred.class);
+
+        if(Accrepo.getAccount(newAccount.getAccount_id()) == null){
+             Accrepo.RegisterAccount(newAccount);
+        } //else ??? brain melting ngl will come back to this tomorrow - ab
+
     }
 
     @Override
@@ -85,21 +99,32 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
     }
 
     //Not sure on the syntax here (Looks like it works -TS)
+    //need a better way to do this, rather than brute forcing
+    //wish object mapper would just ignore irrelevant fields while making an object- ab
     @Override
     public <T> T convertToObject(String json, Class <T> returnType) {
-        ObjectMapper mapper = new ObjectMapper();
-        T newObject = null;
-
         try {
-            newObject = mapper.readValue(json, returnType);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> map = new HashMap<String, Object>();
+            Field[] fields = returnType.getDeclaredFields();
+            T newObject = returnType.newInstance();
+
+            map = mapper.readValue(json, new TypeReference<Map<String, Object>>(){});
+
+            for (Map.Entry<String, Object> me : map.entrySet()){
+                for(Field f : fields){
+                    if(f.getName().equals(me.getKey())){
+                        f.setAccessible(true);
+                        f.set(newObject, me.getValue());
+                    }
+                }
+            }
+            return newObject;
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return newObject;
+
+        return null;
     }
 
 }

@@ -64,14 +64,12 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
 
          //needs testing, assumes that jsonUser has both account info and login cred info
          //not sure if convertToObject will work like this. let me know if it doesn't -ab
-         Account newAccount = convertToObject(jsonUser, Account.class);
-         LoginCred newLogin = convertToObject(jsonUser, LoginCred.class);
-         System.out.println(newLogin.getEmail());
+        Account newAccount = convertToObject(jsonUser, Account.class);
+        LoginCred newLogin = convertToObject(jsonUser, LoginCred.class);
 
-
-        //  if(Accrepo.getAccount(newAccount.getAccount_id()) == null){
-        //     Accrepo.RegisterAccount(newAccount);
-        //  }
+        if(Accrepo.getAccount(newAccount.getAccount_id()) == null){
+             Accrepo.RegisterAccount(newAccount);
+        } //else ??? brain melting ngl will come back to this tomorrow - ab
 
     }
 

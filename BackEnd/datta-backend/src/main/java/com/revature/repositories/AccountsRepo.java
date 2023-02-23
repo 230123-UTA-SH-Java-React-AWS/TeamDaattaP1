@@ -1,5 +1,8 @@
 package com.revature.repositories;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import com.revature.util.*;
 import com.revature.model.Account;
 import java.util.List;
@@ -23,6 +26,9 @@ public class AccountsRepo {
             e.printStackTrace();
             System.out.println("unable to register account, account name may already be taken");
             return;//stop here if an exception was thrown, do not add to the repo
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         //insert into the repo
         this.RegisterToAccountRepo(newAccount);
@@ -46,7 +52,7 @@ public class AccountsRepo {
                 newAcc.setAccount_id(result.getInt(1));
                 newAcc.setFirstName(result.getString(2));
                 newAcc.setLastName(result.getString(3));
-                newAcc.setDob(result.getDate(4));
+                newAcc.setDob(result.getDate(4).toString());
                 newAcc.setBio(result.getString(5));
                 this.AllAccounts.add(newAcc);
             }
@@ -55,13 +61,14 @@ public class AccountsRepo {
         }
     }
 
-    private void RegisterToDatabase(Account newAcc) throws SQLException{
+    private void RegisterToDatabase(Account newAcc) throws SQLException, ParseException{
+        SimpleDateFormat sdf = new SimpleDateFormat();
         String sql = "insert into accounts (firstname, lastname, dateofbirth, bio) values(?, ?, ?, ?)";
         try (Connection con = ConnectionUtil.getConnection()){
             PreparedStatement prstmt = con.prepareStatement(sql);
             prstmt.setString(1, newAcc.getFirstName());
             prstmt.setString(2, newAcc.getLastName());
-            prstmt.setDate(3, newAcc.getDob());
+            prstmt.setDate(3, (Date) sdf.parse(newAcc.getDob()));
             prstmt.setString(4, newAcc.getBio());
             prstmt.execute();
         }

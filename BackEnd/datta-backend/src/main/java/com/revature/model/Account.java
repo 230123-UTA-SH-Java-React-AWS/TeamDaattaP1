@@ -3,7 +3,7 @@ package com.revature.model;
 public class Account {
     private String firstName;
     private String lastName;
-    private java.sql.Date dob;
+    private String dob;
     private String bio;
     private int account_id;
     
@@ -19,10 +19,10 @@ public class Account {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    public java.sql.Date getDob() {
+    public String getDob() {
         return dob;
     }
-    public void setDob(java.sql.Date dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
     public String getBio() {

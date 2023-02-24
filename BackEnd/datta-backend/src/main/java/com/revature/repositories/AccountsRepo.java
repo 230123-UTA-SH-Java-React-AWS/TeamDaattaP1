@@ -21,7 +21,7 @@ public class AccountsRepo {
     public void RegisterAccount(Account newAccount){
         //insert into the database
         try{
-        this.RegisterToDatabase(newAccount);
+        this.RegisterToDatabase(newAccount); //this probably doesn't need to be in a try-catch anymore. validation moved to service layer. -DP
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("unable to register account, account name may already be taken");

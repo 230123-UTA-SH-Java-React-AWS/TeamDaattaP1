@@ -73,7 +73,10 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
         if(!LCrepo.getAll().containsKey(newLogin.getEmail())){
              Accrepo.RegisterAccount(newAccount);
              LCrepo.RegisterLogin(newLogin);
-        } //else ??? brain melting ngl will come back to this tomorrow - ab
+        } else {
+            RuntimeException e = new RuntimeException("unable to register account, account with this login already exists");
+            throw e;
+        }
 
     }
 

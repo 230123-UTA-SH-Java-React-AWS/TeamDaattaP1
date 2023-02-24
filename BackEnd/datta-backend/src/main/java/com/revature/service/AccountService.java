@@ -1,15 +1,9 @@
 package com.revature.service;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -31,23 +25,27 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
     public Account loginUser(String jsonLogin){ //We can throw an exception to UserController here -TS
     
         System.out.println("We're logging in a user");
-        LoginCred newLoginCred = convertToObject(jsonLogin, LoginCred.class);
-
-
-        HashMap<String, LoginCred> AllLoginCreds = LCrepo.getAll();
+        System.out.println(jsonLogin);
         LoginCred realCreds = null;
-        if (AllLoginCreds.containsKey(newLoginCred.getEmail()) //login exists
-             && AllLoginCreds.get(newLoginCred.getEmail()).getPassword().equals(newLoginCred.getPassword()) //password matches
+        LoginCred newLogin = convertToObject(jsonLogin, LoginCred.class);
+        String email  = newLogin.getEmail();
+        System.out.println(email);
+        String password = newLogin.getPassword();
+        HashMap<String, LoginCred> AllLoginCreds = LCrepo.getAll();
+
+        if (LCrepo.checkLogin(email) //login exists
+//             && AllLoginCreds.get(newLogin.getEmail()).getPassword().equals(newLogin.getPassword()) //password matches
              ){
-                realCreds = AllLoginCreds.get(newLoginCred.getEmail());
-                System.out.println("The password matched woohoo");
+//                realCreds = AllLoginCreds.get(newLoginCred.getEmail());
+                System.out.println("Account exists woohoo");
+            return LCrepo.hashLogin(email, password);
         } else {
-            RuntimeException e = new NoSuchElementException("Login or Password is incorrect");
-            throw e;
+            throw new NoSuchElementException("Login or Password is incorrect");
         }
-        Account response = new Account();
-        response = Accrepo.getAccount(realCreds.getCredential_id());
-        return response;
+//        Account response = new Account();
+//        response = Accrepo.getAccount(realCreds.getCredential_id());
+//        return response;
+
     }
 
     @Override
@@ -71,8 +69,11 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
         LoginCred newLogin = convertToObject(jsonUser, LoginCred.class);
 
         if(!LCrepo.getAll().containsKey(newLogin.getEmail())){
-             Accrepo.RegisterAccount(newAccount);
-             LCrepo.RegisterLogin(newLogin);
+//             Accrepo.RegisterAccount(newAccount);
+//             LCrepo.RegisterLogin(newLogin);
+            String email  = newLogin.getEmail();
+            String password = newLogin.getPassword();
+            LCrepo.hashRegister(email, password);
         } //else ??? brain melting ngl will come back to this tomorrow - ab
 
     }

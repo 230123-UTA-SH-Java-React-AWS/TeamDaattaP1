@@ -68,7 +68,7 @@ public class AccountsRepo {
             PreparedStatement prstmt = con.prepareStatement(sql);
             prstmt.setString(1, newAcc.getFirstName());
             prstmt.setString(2, newAcc.getLastName());
-            prstmt.setDate(3, (Date) sdf.parse(newAcc.getDob()));
+            prstmt.setString(3, newAcc.getDob());
             prstmt.setString(4, newAcc.getBio());
             prstmt.execute();
         }

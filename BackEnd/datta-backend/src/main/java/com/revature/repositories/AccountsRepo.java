@@ -98,6 +98,7 @@ public class AccountsRepo implements AccountsInterface{
             prstmt.setString(3, newInfo.getDob());
             prstmt.setString(4, newInfo.getBio());
             prstmt.setInt(5, newInfo.getAccount_id());
+            prstmt.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }

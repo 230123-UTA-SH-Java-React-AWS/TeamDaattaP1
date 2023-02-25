@@ -10,7 +10,7 @@ import com.revature.service.AccountService;
 
 import io.javalin.Javalin;
 
-public class UserController{
+public class AccountController{
     
     private AccountService userService = new AccountService();
 

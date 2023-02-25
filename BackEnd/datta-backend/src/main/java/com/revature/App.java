@@ -1,7 +1,7 @@
 package com.revature;
 
 import com.revature.controller.PostController;
-import com.revature.controller.UserController;
+import com.revature.controller.AccountController;
 
 // import java.net.InetSocketAddress;
 
@@ -18,7 +18,7 @@ public final class App {
 
         Javalin app = Javalin.create();
 
-        UserController userController = new UserController();
+        AccountController userController = new AccountController();
         userController.mapEndpoints(app);
 
         PostController postController =  new PostController();

@@ -107,6 +107,7 @@ public class LoginCredsRepo {
                 int rowsaffected = statement.executeUpdate();
                 int accountId;
                 if (rowsaffected > 0) {
+                    // Will only fail if we have several users registering at the same time -TS
                     PreparedStatement statement3  = con.prepareStatement("SELECT * FROM accounts ORDER BY accountid DESC LIMIT 1");
                     ResultSet rs = statement3.executeQuery();
                     if(rs.next()){
@@ -126,6 +127,7 @@ public class LoginCredsRepo {
 
     }
 
+    // Receives an email and password, and returns the account affiliated with that email/password
     public Account hashLogin(String email, String password){
         Connection con = ConnectionUtil.getConnection();
         Account user = null;

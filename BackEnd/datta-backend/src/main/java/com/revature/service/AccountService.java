@@ -26,25 +26,19 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
     
         System.out.println("We're logging in a user");
         System.out.println(jsonLogin);
-        LoginCred realCreds = null;
+
         LoginCred newLogin = convertToObject(jsonLogin, LoginCred.class);
         String email  = newLogin.getEmail();
         System.out.println(email);
         String password = newLogin.getPassword();
-        HashMap<String, LoginCred> AllLoginCreds = LCrepo.getAll();
 
-        if (LCrepo.checkLogin(email) //login exists
-//             && AllLoginCreds.get(newLogin.getEmail()).getPassword().equals(newLogin.getPassword()) //password matches
-             ){
-//                realCreds = AllLoginCreds.get(newLoginCred.getEmail());
-                System.out.println("Account exists woohoo");
+
+        if (LCrepo.checkLogin(email)){
+                System.out.println("Account exists woohoo"); // nice
             return LCrepo.hashLogin(email, password);
         } else {
             throw new NoSuchElementException("Login or Password is incorrect");
         }
-//        Account response = new Account();
-//        response = Accrepo.getAccount(realCreds.getCredential_id());
-//        return response;
 
     }
 

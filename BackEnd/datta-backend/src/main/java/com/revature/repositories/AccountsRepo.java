@@ -1,7 +1,6 @@
 package com.revature.repositories;
 import java.sql.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import com.revature.util.*;
 import com.revature.model.Account;
@@ -53,7 +52,7 @@ public class AccountsRepo implements AccountsInterface{
                 newAcc.setAccount_id(result.getInt(1));
                 newAcc.setFirstName(result.getString(2));
                 newAcc.setLastName(result.getString(3));
-                newAcc.setDob(result.getDate(4).toString());
+                newAcc.setDob(result.getString(4));
                 newAcc.setBio(result.getString(5));
                 this.AllAccounts.add(newAcc);
             }
@@ -63,13 +62,12 @@ public class AccountsRepo implements AccountsInterface{
     }
 
     private void RegisterToDatabase(Account newAcc) throws SQLException, ParseException{
-        SimpleDateFormat sdf = new SimpleDateFormat();
         String sql = "insert into accounts (firstname, lastname, dateofbirth, bio) values(?, ?, ?, ?)";
         try (Connection con = ConnectionUtil.getConnection()){
             PreparedStatement prstmt = con.prepareStatement(sql);
             prstmt.setString(1, newAcc.getFirstName());
             prstmt.setString(2, newAcc.getLastName());
-            prstmt.setDate(3, (Date) sdf.parse(newAcc.getDob()));
+            prstmt.setString(3, newAcc.getDob());
             prstmt.setString(4, newAcc.getBio());
             prstmt.execute();
         }
@@ -91,14 +89,13 @@ public class AccountsRepo implements AccountsInterface{
 
     @Override
     public void changeAccountInfo(Account newInfo) {
-        SimpleDateFormat sdf = new SimpleDateFormat();
         String sql = "update accounts set firstname = ?, lastname = ?, dateofbirth = ?, bio = ? where accountid = ?";
 
         try (Connection con = ConnectionUtil.getConnection()){
             PreparedStatement prstmt = con.prepareStatement(sql);
             prstmt.setString(1, newInfo.getFirstName());
             prstmt.setString(2, newInfo.getLastName());
-            prstmt.setDate(3, (Date) sdf.parse(newInfo.getDob()));
+            prstmt.setString(3, newInfo.getDob());
             prstmt.setString(4, newInfo.getBio());
             prstmt.setInt(5, newInfo.getAccount_id());
         } catch (Exception e) {

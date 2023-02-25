@@ -19,7 +19,7 @@ public class AccountController{
 
         // ------------------------------ REGISTER A NEW USER ------------------------------
 
-        app.post("/register", (context) ->{
+        app.post("/api/register", (context) ->{
             String userJson = context.body();
 
             // Try creating the new Account
@@ -41,7 +41,7 @@ public class AccountController{
 
         // ------------------------------ LOGIN EXISTING USER ------------------------------
 
-        app.post("/login", (context) ->{
+        app.post("/api/login", (context) ->{
 
             // System.out.println(credentials);
 
@@ -70,7 +70,7 @@ public class AccountController{
 
         // ------------------------------ LOGOUT USER (IF LOGGED IN) ------------------------------
 
-        app.post("/logout", (context) ->{
+        app.post("/api/logout", (context) ->{
             // invalidate an active HTTPSession
             context.req.getSession().invalidate(); // TODO: JWT Token pt.2
             context.result("Logged out account.");
@@ -81,7 +81,7 @@ public class AccountController{
         
         // // ------------------------------ SEARCH FOR OTHER PEOPLE ------------------------------
 
-        app.get("/users", (context) ->{
+        app.get("/api/users", (context) ->{
             String searchJson = context.body();
 
             HttpSession httpSession = context.req.getSession();

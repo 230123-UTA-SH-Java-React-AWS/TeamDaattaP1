@@ -32,10 +32,15 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
     
         System.out.println("We're logging in a user");
         LoginCred newLoginCred = convertToObject(jsonLogin, LoginCred.class);
-
+        System.out.println(newLoginCred.getEmail());
 
         HashMap<String, LoginCred> AllLoginCreds = LCrepo.getAll();
+        System.out.println(AllLoginCreds);
         LoginCred realCreds = null;
+        AllLoginCreds.forEach((key, value) -> {
+            System.out.println(value);
+
+        });
         if (AllLoginCreds.containsKey(newLoginCred.getEmail()) //login exists
              && AllLoginCreds.get(newLoginCred.getEmail()).getPassword().equals(newLoginCred.getPassword()) //password matches
              ){
@@ -92,6 +97,8 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
          * 
          * 4. If the Password is being changed, instead of Account use LoginCred
          */
+        Account newAccount = convertToObject(jsonAccount, Account.class);
+        Accrepo.changeAccountInfo(newAccount);
     }
     ///Maybe a convert from string method here, or several as needed
     

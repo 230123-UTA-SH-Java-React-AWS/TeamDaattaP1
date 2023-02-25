@@ -7,7 +7,7 @@ import com.revature.util.*;
 import com.revature.model.Account;
 import java.util.List;
 import java.util.ArrayList;
-public class AccountsRepo {
+public class AccountsRepo implements AccountsInterface{
     // hard to decide which datastructure to use here, went for arraylist so that the account_id can be their index in the aray
     private List<Account> AllAccounts;
 
@@ -35,6 +35,7 @@ public class AccountsRepo {
     }
 
     //use for logingin
+    @Override
     public Account getAccount(int id){
         return this.AllAccounts.get(id);
     }
@@ -86,6 +87,23 @@ public class AccountsRepo {
         }
         //put the object into the repo's datastructure
         this.AllAccounts.add(newAcc);
+    }
+
+    @Override
+    public void changeAccountInfo(Account newInfo) {
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        String sql = "update accounts set firstname = ?, lastname = ?, dateofbirth = ?, bio = ? where accountid = ?";
+
+        try (Connection con = ConnectionUtil.getConnection()){
+            PreparedStatement prstmt = con.prepareStatement(sql);
+            prstmt.setString(1, newInfo.getFirstName());
+            prstmt.setString(2, newInfo.getLastName());
+            prstmt.setDate(3, (Date) sdf.parse(newInfo.getDob()));
+            prstmt.setString(4, newInfo.getBio());
+            prstmt.setInt(5, newInfo.getAccount_id());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

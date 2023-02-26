@@ -19,7 +19,7 @@ public class AccountController{
 
         // ------------------------------ REGISTER A NEW USER ------------------------------
 
-        app.post("/api/register", (context) ->{
+        app.post("/register", (context) ->{
             String userJson = context.body();
 
             // Try creating the new Account
@@ -41,7 +41,7 @@ public class AccountController{
 
         // ------------------------------ LOGIN EXISTING USER ------------------------------
 
-        app.post("/api/login", (context) ->{
+        app.post("/login", (context) ->{
 
             // System.out.println(credentials);
 

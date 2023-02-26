@@ -29,6 +29,7 @@ public class PostService implements PostServiceInterface, ServiceGenerics{
     
     @Override
     public List<Post> getPostFeed() {
+        // TODO: Filter out all posts that are the current user (userID)
         return postsRepo.getAllPosts();
     }
 

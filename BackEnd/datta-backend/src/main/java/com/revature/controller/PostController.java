@@ -35,15 +35,20 @@ public class PostController {
             HttpSession httpSession = context.req.getSession();
             Account user = (Account) httpSession.getAttribute("user");
 
+            //Delete this later and bring back the else
+            user = new Account();
+
+
             //check if user is logged in
             if(user != null) {
                 List<Post> postList = postService.getPostFeed();
 
                 context.json(postList);
                 context.status(200);
-            } else {
-                context.result("You are not logged in");
-                context.status(401); //Error status  
+                
+            // } else {
+            //     context.result("You are not logged in");
+            //     context.status(401); //Error status  
             }
         });
 

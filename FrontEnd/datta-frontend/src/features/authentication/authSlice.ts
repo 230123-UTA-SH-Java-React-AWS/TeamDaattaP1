@@ -121,7 +121,7 @@ export default authSlice.reducer;
 export const loginAsync = createAsyncThunk(
   "auth/login",
   async (loginPayload: LoginPayload) => {
-    const response = await fetch("/api/login", {
+    const response = await fetch("http://localhost:8000/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -151,7 +151,7 @@ export const loginAsync = createAsyncThunk(
 export const registerAsync = createAsyncThunk(
   "auth/register",
   async (registerPayload: RegisterPayload) => {
-    const response = await fetch("/api/register", {
+    const response = await fetch("http://localhost:8000/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

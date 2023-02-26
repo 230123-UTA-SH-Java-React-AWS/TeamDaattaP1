@@ -1,15 +1,11 @@
 package com.revature.service;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -57,18 +53,6 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
 
     @Override
     public void registerUser(String jsonUser) {
-        /* TODO: Register User: -TS
-         * 
-         * 1. Check to make sure the email is not already registered
-         * 
-         * 2. Create an Account from the jsonUser
-         * 
-         * 3. Send the Account to the AccountRepo to be stored in the accounts table
-         * 
-         * 4. Create a LoginCred fromt he username and password
-         * 
-         * 5. Send the LoginCred to the LoginCredsRepo to be stored in the logincredentials table
-         */
 
          //needs testing, assumes that jsonUser has both account info and login cred info
          //not sure if convertToObject will work like this. let me know if it doesn't -ab
@@ -105,7 +89,6 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
     //TODO: Return List of Users from UserService.searchUsers(searchJson) -TS
     @Override
     public List<Account> searchUsers(String jsonSearch) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'searchUsers'");
     }
 

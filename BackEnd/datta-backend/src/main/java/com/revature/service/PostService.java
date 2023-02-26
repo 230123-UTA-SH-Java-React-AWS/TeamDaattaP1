@@ -1,31 +1,36 @@
 package com.revature.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.revature.model.Post;
+import com.revature.repositories.PostsRepo;
+
 public class PostService implements PostServiceInterface, ServiceGenerics{
-    ///Communicates with the repo to add a new post to the database
-    //Might need a return type later, for now only void
-    @Override
-    public void createNewPost(String jsonPost){
-        ///Shell code for now, commented out to prevent compiler yelling at us
-        //Repository repo = new Repository();
 
-        //ObjectMapper mapper - new ObjectMapper();
+    private PostsRepo postsRepo;
 
-        /*try {
-            Post newPost = mapper.readValue(jsonString, Post.class);
-            repo.savePostMethodName(newPost)     will likely need username/userid as well, to tie to foreign key
-        } catch block here
-         */
+    public PostService(PostsRepo postsRepo){
+        this.postsRepo = postsRepo;
     }
 
+    //Communicates with the repo to add a new post to the database
     @Override
-    public void createNewComment(String jsonComment){
-        //Skeleton
+    public void createNewPost(String jsonPost){
+
+        Post newPost = convertToObject(jsonPost, Post.class);
+        postsRepo.addPost(newPost);
+        
+    }
+    
+    @Override
+    public List<Post> getPostFeed() {
+        // TODO: Filter out all posts that are the current user (userID)
+        return postsRepo.getAllPosts();
     }
 
     @Override
@@ -44,4 +49,5 @@ public class PostService implements PostServiceInterface, ServiceGenerics{
         }
         return newObject;
     }
+
 }

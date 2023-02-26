@@ -13,16 +13,18 @@ import com.revature.repositories.AccountsRepo;
 import com.revature.repositories.LoginCredsRepo;
 
 public class AccountService implements AccountServiceInterface, ServiceGenerics{
-    //perhaps make a repo in a constructor? or make a static repo? check on that later
-    //static repos are what makes sense to me -DP
-    //I agree on the static repo, just feels better -AB
-    private static LoginCredsRepo LCrepo = new LoginCredsRepo();
-    private static AccountsRepo Accrepo = new AccountsRepo();
+
+    private LoginCredsRepo LCrepo;
+    private AccountsRepo Accrepo;
+
+    public AccountService(LoginCredsRepo LCrepo, AccountsRepo Accrepo){
+        this.LCrepo = LCrepo;
+        this.Accrepo = Accrepo;
+    }
 
     ///Communicates with the repo to check if inputted credentials are in the database
-    //Will almost certainly need a return type later
     @Override
-    public Account loginUser(String jsonLogin){ //We can throw an exception to UserController here -TS
+    public Account loginUser(String jsonLogin){
     
         System.out.println("We're logging in a user");
         System.out.println(jsonLogin);

@@ -16,7 +16,9 @@ public final class App {
 
     public static void main(String[] args) throws Exception{
 
-        Javalin app = Javalin.create();
+        Javalin app = Javalin.create(config -> {
+            config.enableCorsForOrigin("http://localhost:3000");
+        });
 
         AccountController userController = new AccountController();
         userController.mapEndpoints(app);

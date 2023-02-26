@@ -34,7 +34,7 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
         System.out.println(email);
         String password = newLogin.getPassword();
 
-
+        //This NEEDS to check password too, java gets mad if you have the right email but wrong password - ab
         if (LCrepo.checkLogin(email)){
                 System.out.println("Account exists woohoo"); // nice
             return LCrepo.hashLogin(email, password);
@@ -46,31 +46,23 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
 
     @Override
     public void registerUser(String jsonUser) {
-        /* TODO: Register User: -TS
-         * 
-         * 1. Check to make sure the email is not already registered
-         * 
-         * 2. Create an Account from the jsonUser
-         * 
-         * 3. Send the Account to the AccountRepo to be stored in the accounts table
-         * 
-         * 4. Create a LoginCred fromt he username and password
-         * 
-         * 5. Send the LoginCred to the LoginCredsRepo to be stored in the logincredentials table
-         */
 
          //needs testing, assumes that jsonUser has both account info and login cred info
          //not sure if convertToObject will work like this. let me know if it doesn't -ab
         Account newAccount = convertToObject(jsonUser, Account.class);
         LoginCred newLogin = convertToObject(jsonUser, LoginCred.class);
 
+        //this isn't working for validating email, will get inside the if every time
         if(!LCrepo.getAll().containsKey(newLogin.getEmail())){
 //             Accrepo.RegisterAccount(newAccount);
 //             LCrepo.RegisterLogin(newLogin);
             String email  = newLogin.getEmail();
             String password = newLogin.getPassword();
             LCrepo.hashRegister(email, password);
-        } //else ??? brain melting ngl will come back to this tomorrow - ab
+        } else {
+            RuntimeException e = new RuntimeException("unable to register account, account with this login already exists");
+            throw e;
+        }
 
     }
 
@@ -86,13 +78,14 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
          * 
          * 4. If the Password is being changed, instead of Account use LoginCred
          */
+        Account newAccount = convertToObject(jsonAccount, Account.class);
+        Accrepo.changeAccountInfo(newAccount);
     }
     ///Maybe a convert from string method here, or several as needed
     
     //TODO: Return List of Users from UserService.searchUsers(searchJson) -TS
     @Override
     public List<Account> searchUsers(String jsonSearch) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'searchUsers'");
     }
 

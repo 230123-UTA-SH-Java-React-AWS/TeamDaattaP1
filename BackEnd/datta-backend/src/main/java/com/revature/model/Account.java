@@ -49,9 +49,9 @@ public class Account {
     }
 
     public Account(){
-        this.firstName = null;
-        this.lastName = null;
-        this.dob = null;
-        this.bio = null;
+        this.firstName = "";
+        this.lastName = "";
+        this.dob = "";
+        this.bio = "";
     }
 }

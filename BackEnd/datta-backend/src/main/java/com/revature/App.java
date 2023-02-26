@@ -4,7 +4,9 @@ import com.revature.controller.PostController;
 import com.revature.controller.UserController;
 import com.revature.repositories.AccountsRepo;
 import com.revature.repositories.LoginCredsRepo;
+import com.revature.repositories.PostsRepo;
 import com.revature.service.AccountService;
+import com.revature.service.PostService;
 
 // import java.net.InetSocketAddress;
 
@@ -26,7 +28,7 @@ public final class App {
         UserController userController = new UserController(accountService);
         userController.mapEndpoints(app);
 
-        PostController postController =  new PostController();
+        PostController postController =  new PostController(new PostService(new PostsRepo()));
         postController.mapEndpoints(app);
 
         app.start(8000);

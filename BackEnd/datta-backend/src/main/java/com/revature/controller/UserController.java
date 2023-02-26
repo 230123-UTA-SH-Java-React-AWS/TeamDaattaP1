@@ -1,6 +1,7 @@
 package com.revature.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpSession;
@@ -43,16 +44,23 @@ public class UserController{
             // System.out.println(credentials);
 
             try{
-                Account user = userService.loginUser(context.body());
-
-                // set the user object into an HTTPSession object TODO: Teagan, make this into a JWT Token instead -TS
-                HttpSession session = context.req.getSession(); // get the HTTPSession (there is a cookie utilized by the client)
-                // to identify the httpSession object associated with the client
-                session.setAttribute("user", user);
-
-                context.result("Welcome " + user.getFirstName() + " " + user.getLastName());
-                context.json(user);
+                Map<String, Object> response = userService.loginUser(context.body());
+                // Set the user object into an HTTPSession object if needed
+                HttpSession session = context.req.getSession();
+                session.setAttribute("user", response.get("user"));
+                System.out.println("" + response.get("token"));
+                context.header("Authorization","" +response.get("token"));
+                context.json(response.get("user"));
                 context.status(200);
+
+//                // set the user object into an HTTPSession object TODO: Teagan, make this into a JWT Token instead -TS
+//                HttpSession session = context.req.getSession(); // get the HTTPSession (there is a cookie utilized by the client)
+//                // to identify the httpSession object associated with the client
+//                session.setAttribute("user", user);
+//
+//                context.result("Welcome " + user.getFirstName() + " " + user.getLastName());
+//                context.json(user);
+//                context.status(200);
             } catch (NoSuchElementException e){//login or password was incorrect
                 context.status(404);
                 context.result(e.getMessage());

@@ -128,11 +128,13 @@ export const loginAsync = createAsyncThunk(
       },
       body: JSON.stringify(loginPayload),
     });
-    console.log(response);
+    console.log(response.headers);
 
-    if (response) {
+    if (response.ok) {
       const user = await response.json();
       const token = response.headers.get("Authorization") || "";
+      console.log(response.headers);
+      console.log(token);
       // Save the token to localStorage
       if (token) {
         localStorage.setItem("token", token);

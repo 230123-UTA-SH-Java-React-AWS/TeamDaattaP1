@@ -22,29 +22,26 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
     ///Communicates with the repo to check if inputted credentials are in the database
     //Will almost certainly need a return type later
     @Override
-    public Account loginUser(String jsonLogin){ //We can throw an exception to UserController here -TS
+    public  Map<String,Object> loginUser(String jsonLogin){ //We can throw an exception to UserController here -TS
     
         System.out.println("We're logging in a user");
         System.out.println(jsonLogin);
-        LoginCred realCreds = null;
         LoginCred newLogin = convertToObject(jsonLogin, LoginCred.class);
         String email  = newLogin.getEmail();
         System.out.println(email);
         String password = newLogin.getPassword();
-        HashMap<String, LoginCred> AllLoginCreds = LCrepo.getAll();
+        if (LCrepo.checkLogin(email)){
+            System.out.println("Account exists woohoo");
+            String token = LCrepo.hashLogin(email,password);
+            Account user = LCrepo.getAccountByEmail(email);
 
-        if (LCrepo.checkLogin(email) //login exists
-//             && AllLoginCreds.get(newLogin.getEmail()).getPassword().equals(newLogin.getPassword()) //password matches
-             ){
-//                realCreds = AllLoginCreds.get(newLoginCred.getEmail());
-                System.out.println("Account exists woohoo");
-            return LCrepo.hashLogin(email, password);
+            Map<String,Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("user",user);
+            return response;
         } else {
             throw new NoSuchElementException("Login or Password is incorrect");
         }
-//        Account response = new Account();
-//        response = Accrepo.getAccount(realCreds.getCredential_id());
-//        return response;
 
     }
 

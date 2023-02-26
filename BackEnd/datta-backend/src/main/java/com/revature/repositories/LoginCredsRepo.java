@@ -92,6 +92,8 @@ public class LoginCredsRepo {
         // Hash the password
         String hashedPassword = PasswordHasher.hashPassword(password);
 
+
+
         // Insert the user into the database
         Connection con = ConnectionUtil.getConnection();
         try {
@@ -126,9 +128,11 @@ public class LoginCredsRepo {
 
     }
 
-    public Account hashLogin(String email, String password){
+    public String hashLogin(String email, String password){
         Connection con = ConnectionUtil.getConnection();
-        Account user = null;
+        //generate jwt token
+        String token = null;
+
         try {
             String sql = "SELECT lc.useremail, lc.userpassword, a.accountid, a.firstname,a.lastname, a.dateofbirth, a.bio " + "FROM logincredentials lc " + "JOIN accounts a ON lc.userid = a.accountid " + "WHERE lc.useremail = ?";
 
@@ -138,17 +142,19 @@ public class LoginCredsRepo {
             if (rs.next()){
                 String hashedPassword = rs.getString("userpassword");
                 if(PasswordHasher.checkPassword(password, hashedPassword)){
+                    // Credentials are correct, generate JWT token
                     int accountId = rs.getInt("accountid");
                     String firstName = rs.getString("firstname");
                     String lastName = rs.getString("lastname");
                     String dob = rs.getString("dateofbirth");
                     String bio = rs.getString("bio");
-                    user =  new Account(accountId, firstName,lastName, dob, bio);
+                    token = JwtUtil.generateToken(accountId,firstName,lastName,dob,bio);
+
             }}
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return user;
+        return token;
     }
 
     public boolean checkLogin(String email){
@@ -165,6 +171,28 @@ public class LoginCredsRepo {
             throw new RuntimeException(e);
         }
         return false;
+    }
+
+    public Account getAccountByEmail(String email) {
+        Connection con = ConnectionUtil.getConnection();
+        Account account = null;
+        try {
+            String sql = "SELECT accountid, firstname, lastname, dateofbirth, bio FROM accounts WHERE accountid = (SELECT userid FROM logincredentials WHERE useremail = ?)";
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setString(1, email);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                int accountId = rs.getInt("accountid");
+                String firstName = rs.getString("firstname");
+                String lastName = rs.getString("lastname");
+                String dob = rs.getString("dateofbirth");
+                String bio = rs.getString("bio");
+                account = new Account(accountId, firstName, lastName, dob, bio);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return account;
     }
 
 

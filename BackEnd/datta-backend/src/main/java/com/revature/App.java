@@ -19,6 +19,9 @@ public final class App {
             config.enableCorsForAllOrigins(); // add this line to enable CORS for all origins
         });
 
+        // to allow the jwt token to get to the frontend, some cors thing
+        app.before(ctx -> ctx.header("Access-Control-Expose-Headers", "Authorization"));
+
         UserController userController = new UserController();
         userController.mapEndpoints(app);
 

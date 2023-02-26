@@ -1,3 +1,4 @@
+import Post from "./components/Post";
 import { useAxios } from "./hooks/useAxios";
 
 export interface testPokeApiResponse {
@@ -10,15 +11,15 @@ export interface testPokeData {
   name: string;
   url: string;
 }
+
 export interface testPostResponse {
-  count: number;
-  next: string;
-  previous: null;
-  results: testPost[];
+  [postID: number]: testPost;
 }
 export interface testPost {
-  userid: number;
   content: string;
+  id: number;
+  liked: boolean;
+  userID: number;
 }
 
 function App() {
@@ -41,11 +42,15 @@ function App() {
   if(error !== "") return <p>{error}</p>;
   if(!data) return <p>Data was null</p>;
 
+ const data2 = Object.values(data);
+
   return (
     <>
-      {data.results.map((p) => (
-        <h3 key={p.content}>{p.content}</h3>
-      ))}
+      { 
+        data2.map((p) => (
+           <Post key={p.id}/>
+        ))
+      }
     </>
   );
 }

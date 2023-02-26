@@ -42,9 +42,9 @@ function Post() {
             {activeTab === 0 && (
               <p>
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Consectetur totam voluptates delectus mollitia expedita modi
-                repudiandae ex deserunt voluptate, deleniti praesentium aliquid, id
-                odio quam nobis ea nulla soluta porro?
+                  Consectetur totam voluptates delectus mollitia expedita modi
+                  repudiandae ex deserunt voluptate, deleniti praesentium aliquid, id
+                  odio quam nobis ea nulla soluta porro?
               </p>
             )}
             {activeTab === 1 && (

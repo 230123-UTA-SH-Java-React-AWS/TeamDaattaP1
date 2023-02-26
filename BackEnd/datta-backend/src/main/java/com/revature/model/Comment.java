@@ -5,10 +5,28 @@ public class Comment {
     private java.sql.Date tStamp;
     private boolean isLiked;
     private java.sql.Date likeTStamp;
-    //private int id
-    //private int postid
-    //private int userid
+    private int ID;
+    private int postID;
+    private int userID;
 
+    public int getID() {
+        return ID;
+    }
+    public void setID(int iD) {
+        ID = iD;
+    }
+    public int getPostID() {
+        return postID;
+    }
+    public void setPostID(int postID) {
+        this.postID = postID;
+    }
+    public int getUserID() {
+        return userID;
+    }
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
     public boolean isLiked() {
         return isLiked;
     }

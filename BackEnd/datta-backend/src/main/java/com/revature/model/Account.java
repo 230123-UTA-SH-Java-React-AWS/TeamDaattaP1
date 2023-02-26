@@ -6,7 +6,17 @@ public class Account {
     private String dob;
     private String bio;
     private int account_id;
-    
+
+
+
+    public Account(int account_id,String firstName, String lastName, String dob, String bio) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.bio = bio;
+        this.account_id = account_id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -39,9 +49,9 @@ public class Account {
     }
 
     public Account(){
-        this.firstName = null;
-        this.lastName = null;
-        this.dob = null;
-        this.bio = null;
+        this.firstName = "";
+        this.lastName = "";
+        this.dob = "";
+        this.bio = "";
     }
 }

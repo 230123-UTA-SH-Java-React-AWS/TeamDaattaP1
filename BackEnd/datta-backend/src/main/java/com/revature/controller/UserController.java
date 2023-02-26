@@ -6,13 +6,19 @@ import java.util.NoSuchElementException;
 import javax.servlet.http.HttpSession;
 
 import com.revature.model.Account;
+import com.revature.repositories.AccountsRepo;
+import com.revature.repositories.LoginCredsRepo;
 import com.revature.service.AccountService;
 
 import io.javalin.Javalin;
 
-public class AccountController{
+public class UserController{
     
-    private AccountService userService = new AccountService();
+    private AccountService accountService;
+
+    public UserController(AccountService accountService){
+        this.accountService = accountService;
+    }
 
     // --------------- UserController - handles user login, logout, and register HTTP requests ---------------
     public void mapEndpoints(Javalin app) {
@@ -24,7 +30,7 @@ public class AccountController{
 
             // Try creating the new Account
             try{
-                userService.registerUser(userJson); // TODO: gives an exception?
+                accountService.registerUser(userJson); // TODO: gives an exception?
 
                 context.result("Account successfully created.");
                 context.status(201);    // 2xx success - 201 Created
@@ -46,7 +52,7 @@ public class AccountController{
             // System.out.println(credentials);
 
             try{
-                Account user = userService.loginUser(context.body());
+                Account user = accountService.loginUser(context.body());
 
                 // set the user object into an HTTPSession object TODO: Teagan, make this into a JWT Token instead -TS
                 HttpSession session = context.req.getSession(); // get the HTTPSession (there is a cookie utilized by the client)
@@ -90,7 +96,7 @@ public class AccountController{
             //check if user is logged in
             if(user != null) {
                 // Try searching for accounts like 'searchJson'
-                List<Account> userList = userService.searchUsers(searchJson);
+                List<Account> userList = accountService.searchUsers(searchJson);
 
                 context.json(userList);
                 context.status(200);

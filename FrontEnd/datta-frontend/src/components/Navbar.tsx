@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppBar, Button, Toolbar } from "react95";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -8,27 +8,37 @@ import {
   toggleThemeLight,
 } from "../features/darkMode/themeSlice";
 import original from "react95/dist/themes/original";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { RootState } from "../redux/store";
+import { logoutSuccess } from "../features/authentication/authSlice";
 
 function Navbar() {
-  //toggles profile and posts buttons once login and signup are clicked
-  const [open, setOpen] = useState(false);
+  //toggles profile and posts buttons once login is clicked
+  const auth = useAppSelector((state: RootState) => state.auth);
+  console.log(auth);
 
   //redux theme
   const theme = useAppSelector(selectTheme);
   const dispatch = useAppDispatch();
 
+  //redirect user when it logs out
+  const navigate = useNavigate();
+
+  //logout user
+  const handleLogout = () => {
+    dispatch(logoutSuccess());
+    navigate("/login");
+  };
+
   return (
     <AppBar style={{ top: 0, bottom: 0, left: 0, width: 90 }}>
       <Toolbar style={{ justifyContent: "space-between" }}>
         <div style={{ position: "relative", display: "inline-block" }}>
-          {!open && (
+          {!auth.isAuthenticated && (
             <>
               <Link to={"/login"}>
                 <NavButton
                   primary
-                  onClick={() => setOpen(!open)}
-                  active={open}
                   style={{
                     fontWeight: "bold",
                   }}
@@ -38,12 +48,12 @@ function Navbar() {
               </Link>
             </>
           )}
-          {open && (
+          {auth.isAuthenticated && (
             <>
               <Link to={"/"}>
                 <NavButton
                   primary
-                  onClick={() => setOpen(!open)}
+                  onClick={handleLogout}
                   style={{
                     fontWeight: "bold",
                   }}

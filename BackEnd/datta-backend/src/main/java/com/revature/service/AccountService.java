@@ -1,10 +1,8 @@
 package com.revature.service;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
+
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -15,40 +13,35 @@ import com.revature.repositories.AccountsRepo;
 import com.revature.repositories.LoginCredsRepo;
 
 public class AccountService implements AccountServiceInterface, ServiceGenerics{
-    //perhaps make a repo in a constructor? or make a static repo? check on that later
-    //static repos are what makes sense to me -DP
-    //I agree on the static repo, just feels better -AB
-    private static LoginCredsRepo LCrepo = new LoginCredsRepo();
-    private static AccountsRepo Accrepo = new AccountsRepo();
+
+    private LoginCredsRepo LCrepo;
+    private AccountsRepo Accrepo;
+
+    public AccountService(LoginCredsRepo LCrepo, AccountsRepo Accrepo){
+        this.LCrepo = LCrepo;
+        this.Accrepo = Accrepo;
+    }
 
     ///Communicates with the repo to check if inputted credentials are in the database
-    //Will almost certainly need a return type later
     @Override
-    public Account loginUser(String jsonLogin){ //We can throw an exception to UserController here -TS
+    public Account loginUser(String jsonLogin){
     
         System.out.println("We're logging in a user");
-        LoginCred newLoginCred = convertToObject(jsonLogin, LoginCred.class);
-        System.out.println(newLoginCred.getEmail());
+        System.out.println(jsonLogin);
 
-        HashMap<String, LoginCred> AllLoginCreds = LCrepo.getAll();
-        System.out.println(AllLoginCreds);
-        LoginCred realCreds = null;
-        AllLoginCreds.forEach((key, value) -> {
-            System.out.println(value);
+        LoginCred newLogin = convertToObject(jsonLogin, LoginCred.class);
+        String email  = newLogin.getEmail();
+        System.out.println(email);
+        String password = newLogin.getPassword();
 
-        });
-        if (AllLoginCreds.containsKey(newLoginCred.getEmail()) //login exists
-             && AllLoginCreds.get(newLoginCred.getEmail()).getPassword().equals(newLoginCred.getPassword()) //password matches
-             ){
-                realCreds = AllLoginCreds.get(newLoginCred.getEmail());
-                System.out.println("The password matched woohoo");
+        //This NEEDS to check password too, java gets mad if you have the right email but wrong password - ab
+        if (LCrepo.checkLogin(email)){
+                System.out.println("Account exists woohoo"); // nice
+            return LCrepo.hashLogin(email, password);
         } else {
-            RuntimeException e = new NoSuchElementException("Login or Password is incorrect");
-            throw e;
+            throw new NoSuchElementException("Login or Password is incorrect");
         }
-        Account response = new Account();
-        response = Accrepo.getAccount(realCreds.getCredential_id());
-        return response;
+
     }
 
     @Override
@@ -59,9 +52,13 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
         Account newAccount = convertToObject(jsonUser, Account.class);
         LoginCred newLogin = convertToObject(jsonUser, LoginCred.class);
 
+        //this isn't working for validating email, will get inside the if every time
         if(!LCrepo.getAll().containsKey(newLogin.getEmail())){
-             Accrepo.RegisterAccount(newAccount);
-             LCrepo.RegisterLogin(newLogin);
+//             Accrepo.RegisterAccount(newAccount);
+//             LCrepo.RegisterLogin(newLogin);
+            String email  = newLogin.getEmail();
+            String password = newLogin.getPassword();
+            LCrepo.hashRegister(email, password);
         } else {
             RuntimeException e = new RuntimeException("unable to register account, account with this login already exists");
             throw e;

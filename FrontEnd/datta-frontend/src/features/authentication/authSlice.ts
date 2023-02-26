@@ -128,14 +128,17 @@ export const loginAsync = createAsyncThunk(
       },
       body: JSON.stringify(loginPayload),
     });
-    if (response.ok) {
-      const data = await response.json();
-      const user = data.user;
+    console.log(response);
+
+    if (response) {
+      const user = await response.json();
       const token = response.headers.get("Authorization") || "";
       // Save the token to localStorage
       if (token) {
         localStorage.setItem("token", token);
       }
+      console.log(user);
+
       console.log("login post was successfull");
 
       return { user, token };
@@ -159,8 +162,7 @@ export const registerAsync = createAsyncThunk(
       body: JSON.stringify(registerPayload),
     });
     if (response.ok) {
-      const data = await response.json();
-      const user = data.user;
+      const user = await response.json();
       const token = response.headers.get("Authorization") || "";
       // Save the token to localStorage
       if (token) {

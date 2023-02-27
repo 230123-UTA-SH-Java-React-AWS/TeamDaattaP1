@@ -36,6 +36,7 @@ public class PostsRepo implements PostsInterface {
 
     @Override
     public List<Post> getAllPosts() {
+        System.out.println("Retrieving Posts from DB");
         ArrayList<Post> postList = new ArrayList<Post>();
         String sql = "SELECT postid, userid, postcontent, timeofpost FROM posts";
 

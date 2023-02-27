@@ -21,7 +21,7 @@ public final class App {
     public static void main(String[] args) throws Exception{
 
         Javalin app = Javalin.create(config -> {
-            config.enableCorsForAllOrigins(); // add this line to enable CORS for all origins
+            config.enableCorsForOrigin("http://localhost:3000");
         });
 
         // to allow the jwt token to get to the frontend, some cors thing

@@ -119,7 +119,7 @@ export default authSlice.reducer;
 
 //========LOGIN============
 export const loginAsync = createAsyncThunk(
-  "auth/login",
+  "/login",
   async (loginPayload: LoginPayload) => {
     const response = await fetch("http://localhost:8000/login", {
       method: "POST",

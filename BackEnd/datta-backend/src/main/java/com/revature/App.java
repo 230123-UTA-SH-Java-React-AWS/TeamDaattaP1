@@ -1,7 +1,7 @@
 package com.revature;
 
 import com.revature.controller.PostController;
-import com.revature.controller.UserController;
+import com.revature.controller.AccountController;
 import com.revature.repositories.AccountsRepo;
 import com.revature.repositories.LoginCredsRepo;
 import com.revature.repositories.PostsRepo;
@@ -27,7 +27,7 @@ public final class App {
         // to allow the jwt token to get to the frontend, some cors thing
         app.before(ctx -> ctx.header("Access-Control-Expose-Headers", "Authorization"));
         AccountService accountService = new AccountService(new LoginCredsRepo(), new AccountsRepo());
-        UserController userController = new UserController(accountService);
+        AccountController userController = new AccountController(accountService);
         userController.mapEndpoints(app);
 
         PostController postController =  new PostController(new PostService(new PostsRepo()));

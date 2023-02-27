@@ -5,7 +5,6 @@ import com.revature.model.Account;
 import com.revature.util.*;
 import com.revature.model.LoginCred;
 import java.util.HashMap;
-import java.util.Optional;
 
 public class LoginCredsRepo {
 
@@ -95,9 +94,10 @@ public class LoginCredsRepo {
      * @param email the user's email
      * @param password the user's password
      */
-    public void hashRegister(String email, String password) {
+    public String hashRegister(String email, String password) {
         // Hash the password
         String hashedPassword = PasswordHasher.hashPassword(password);
+        String token = "";
 
         // Insert the user into the database
         Connection con = ConnectionUtil.getConnection();
@@ -127,12 +127,15 @@ public class LoginCredsRepo {
                     statement2.executeUpdate();
 
                     // Login the user automatically on successful register
-                    hashLogin(email,password);
+                    System.out.println("Automatically Logging In New User");
+                    token = hashLogin(email,password);
                 }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+        return token;
     }
 
 

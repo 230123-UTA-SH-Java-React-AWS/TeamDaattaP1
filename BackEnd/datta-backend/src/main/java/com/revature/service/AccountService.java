@@ -76,7 +76,7 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
      * @throws RuntimeException if the account with the given email already exists
      */
     @Override
-    public void registerUser(String jsonUser) {
+    public Map<String, Object> registerUser(String jsonUser) {
 
         // Convert JSON string to LoginCred object
         LoginCred newLogin = convertToObject(jsonUser, LoginCred.class);
@@ -86,12 +86,18 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
         if(!LCrepo.checkLogin(email)){
             String password = newLogin.getPassword();
             // If account does not exist, register user
-            LCrepo.hashRegister(email, password);
+            String token = LCrepo.hashRegister(email, password);
+
+            Account user = LCrepo.getAccountByEmail(email);
+            // Create a response map containing the token and user information
+            Map<String,Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("user",user);
+            return response;
         } else {
             // If account already exists, throw a runtime exception
             throw new RuntimeException("unable to register account, account with this login already exists");
         }
-
     }
 
     @Override

@@ -7,17 +7,15 @@ import java.util.NoSuchElementException;
 import javax.servlet.http.HttpSession;
 
 import com.revature.model.Account;
-import com.revature.repositories.AccountsRepo;
-import com.revature.repositories.LoginCredsRepo;
 import com.revature.service.AccountService;
 
 import io.javalin.Javalin;
 
-public class UserController{
+public class AccountController{
     
     private AccountService accountService;
 
-    public UserController(AccountService accountService){
+    public AccountController(AccountService accountService){
         this.accountService = accountService;
     }
 
@@ -79,7 +77,7 @@ public class UserController{
 
         // ------------------------------ LOGOUT USER (IF LOGGED IN) ------------------------------
 
-        app.post("/api/logout", (context) ->{
+        app.post("/logout", (context) ->{
             // invalidate an active HTTPSession
             context.req.getSession().invalidate(); // TODO: JWT Token pt.2
             context.result("Logged out account.");
@@ -90,7 +88,7 @@ public class UserController{
         
         // // ------------------------------ SEARCH FOR OTHER PEOPLE ------------------------------
 
-        app.get("/api/users", (context) ->{
+        app.get("/users", (context) ->{
             String searchJson = context.body();
 
             HttpSession httpSession = context.req.getSession();

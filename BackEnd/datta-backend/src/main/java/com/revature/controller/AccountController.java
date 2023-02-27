@@ -29,9 +29,16 @@ public class AccountController{
 
             // Try creating the new Account
             try{
-                accountService.registerUser(userJson); // TODO: gives an exception?
+                Map<String, Object> response = accountService.registerUser(userJson); // TODO: gives an exception?
 
-                context.result("Account successfully created.");
+                // Set the user object into an HTTPSession object if needed.
+                HttpSession session = context.req.getSession();
+                session.setAttribute("user", response.get("user"));
+                
+                context.header("Authorization","" + response.get("token"));
+
+                // context.result("Account successfully created.");
+                context.json(response.get("user"));
                 context.status(201);    // 2xx success - 201 Created
             } catch (RuntimeException e){
                 context.result(e.getMessage()); // print exception message

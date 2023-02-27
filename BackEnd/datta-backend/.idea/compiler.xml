@@ -9,8 +9,5 @@
         <module name="datta-backend" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="datta-backend" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

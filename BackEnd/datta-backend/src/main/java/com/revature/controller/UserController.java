@@ -51,8 +51,8 @@ public class UserController{
         app.post("/login", (context) -> {
 
             try {
-                // Call the `loginUser` method of the `userService` object and pass the request body as an argument.
-                Map<String, Object> response = userService.loginUser(context.body());
+                // Call the `loginUser` method of the `accountService` object and pass the request body as an argument.
+                Map<String, Object> response = accountService.loginUser(context.body());
 
                 // Set the user object into an HTTPSession object if needed.
                 HttpSession session = context.req.getSession();

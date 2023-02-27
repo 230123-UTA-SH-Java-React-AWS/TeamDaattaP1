@@ -26,7 +26,6 @@ public final class App {
 
         // to allow the jwt token to get to the frontend, some cors thing
         app.before(ctx -> ctx.header("Access-Control-Expose-Headers", "Authorization"));
-        // UserController userController = new UserController(); ==== merge conflict, i think we dont need this one??
         AccountService accountService = new AccountService(new LoginCredsRepo(), new AccountsRepo());
         UserController userController = new UserController(accountService);
         userController.mapEndpoints(app);

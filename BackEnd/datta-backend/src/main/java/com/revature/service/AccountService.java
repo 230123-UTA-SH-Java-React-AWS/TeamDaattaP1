@@ -36,37 +36,23 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
     @Override
     public Map<String,Object> loginUser(String jsonLogin){
         // Log that a user is being logged in
-
-    ///Communicates with the repo to check if inputted credentials are in the database
-    @Override
-    public Account loginUser(String jsonLogin){
-    
-
         System.out.println("We're logging in a user");
 
         // Parse the JSON string into a LoginCred object
         System.out.println(jsonLogin);
-
-
-
         LoginCred newLogin = convertToObject(jsonLogin, LoginCred.class);
-
         // Extract the email and password from the LoginCred object
         String email  = newLogin.getEmail();
         System.out.println(email);
         String password = newLogin.getPassword();
 
-
         // Check if the user exists in the database
         if (LCrepo.checkLogin(email)){
             System.out.println("Account exists woohoo");
-
             // Generate a JWT token for the user
             String token = LCrepo.hashLogin(email,password);
-
             // Get the user's account information from the database
             Account user = LCrepo.getAccountByEmail(email);
-
             // Create a response map containing the token and user information
             Map<String,Object> response = new HashMap<>();
             response.put("token", token);
@@ -74,9 +60,7 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
             return response;
 
         //This NEEDS to check password too, java gets mad if you have the right email but wrong password - ab
-        if (LCrepo.checkLogin(email)){
-                System.out.println("Account exists woohoo"); // nice
-            return LCrepo.hashLogin(email, password);
+            // LCRepo checks password with hashed password
         } else {
             // Throw an exception if the login attempt fails
             throw new NoSuchElementException("Login or Password is incorrect");
@@ -84,24 +68,28 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
 
     }
 
+    /**
+     * Registers a new user by creating a new LoginCred instance and hashing the password.
+     *
+     * @param jsonUser the JSON string containing the user's account and login credential information
+     * in the format specified by the API
+     * @throws RuntimeException if the account with the given email already exists
+     */
     @Override
     public void registerUser(String jsonUser) {
 
-         //needs testing, assumes that jsonUser has both account info and login cred info
-         //not sure if convertToObject will work like this. let me know if it doesn't -ab
-        Account newAccount = convertToObject(jsonUser, Account.class);
+        // Convert JSON string to LoginCred object
         LoginCred newLogin = convertToObject(jsonUser, LoginCred.class);
+        String email  = newLogin.getEmail();
 
-        //this isn't working for validating email, will get inside the if every time
-        if(!LCrepo.getAll().containsKey(newLogin.getEmail())){
-//             Accrepo.RegisterAccount(newAccount);
-//             LCrepo.RegisterLogin(newLogin);
-            String email  = newLogin.getEmail();
+        // Check if account with the given email already exists
+        if(!LCrepo.checkLogin(email)){
             String password = newLogin.getPassword();
+            // If account does not exist, register user
             LCrepo.hashRegister(email, password);
         } else {
-            RuntimeException e = new RuntimeException("unable to register account, account with this login already exists");
-            throw e;
+            // If account already exists, throw a runtime exception
+            throw new RuntimeException("unable to register account, account with this login already exists");
         }
 
     }

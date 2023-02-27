@@ -16,7 +16,7 @@ export const store = configureStore({
 // Set token in store when app loads and log user in
 const token = localStorage.getItem("token");
 if (token) {
-  store.dispatch(loginWithToken);
+  store.dispatch(loginWithToken(token));
 }
 
 export type AppDispatch = typeof store.dispatch;

@@ -5,15 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cce0626-8861-482f-a55c-bf3a4ff85ed4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/util/PasswordHasher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_jsonwebtoken_jjwt_api_0_11_5.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_jsonwebtoken_jjwt_impl_0_11_5.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_jsonwebtoken_jjwt_jackson_0_11_5.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datta-backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/datta-backend.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/model/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/model/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repositories/AccountsRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repositories/AccountsRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/repositories/LoginCredsRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/repositories/LoginCredsRepo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/AccountServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/AccountServiceInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../FrontEnd/datta-frontend/src/features/authentication/authSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../FrontEnd/datta-frontend/src/features/authentication/authSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../FrontEnd/datta-frontend/src/pages/Authenticate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../FrontEnd/datta-frontend/src/pages/Authenticate.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,20 +48,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Revature/P1/TeamDattaP1/BackEnd/datta-backend&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "extract.method.default.visibility": "private",
+    "last_opened_file_path": "D:/Revature/P1/TeamDattaP1/BackEnd/datta-backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -71,7 +76,7 @@
       <workItem from="1677186920094" duration="192000" />
       <workItem from="1677187129536" duration="116000" />
       <workItem from="1677187256502" duration="957000" />
-      <workItem from="1677188225936" duration="21003000" />
+      <workItem from="1677188225936" duration="30224000" />
     </task>
     <servers />
   </component>

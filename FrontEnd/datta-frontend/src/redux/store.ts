@@ -4,12 +4,14 @@ import themeSlice from "../features/darkMode/themeSlice";
 import authSlice, {
   loginWithToken,
 } from "../features/authentication/authSlice";
+import postSlice from "../features/postfeed/postSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     darkMode: themeSlice,
     auth: authSlice,
+    postList: postSlice,
   },
 });
 

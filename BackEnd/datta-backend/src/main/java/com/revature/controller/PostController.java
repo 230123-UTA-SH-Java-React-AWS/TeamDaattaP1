@@ -41,6 +41,7 @@ public class PostController {
 
             //check if user is logged in
             if(user != null) {
+                System.out.println("Getting post feed");
                 List<Post> postList = postService.getPostFeed();
 
                 context.json(postList);

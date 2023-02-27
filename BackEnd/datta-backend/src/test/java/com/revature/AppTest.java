@@ -2,6 +2,8 @@ package com.revature;
 
 import org.junit.jupiter.api.Test;
 
+import com.revature.repositories.AccountsRepo;
+import com.revature.repositories.LoginCredsRepo;
 import com.revature.service.AccountService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,7 +17,7 @@ class AppTest {
      */
     @Test
     void testApp() {
-        AccountService service = new AccountService();
+        AccountService service = new AccountService(new LoginCredsRepo(), new AccountsRepo());
 
         String json = "{'email' : 'garbage'}";
         service.registerUser(json);

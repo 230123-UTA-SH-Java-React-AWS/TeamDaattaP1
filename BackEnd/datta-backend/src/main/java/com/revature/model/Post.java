@@ -5,9 +5,21 @@ public class Post {
     private java.sql.Timestamp tStamp;
     private boolean isLiked;
     private java.sql.Timestamp likeTStamp;
-    //private int userid
-    //private int id
+    private int userID;
+    private int ID;
 
+    public int getID() {
+        return ID;
+    }
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+    public int getUserID() {
+        return userID;
+    }
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
     public boolean isLiked() {
         return isLiked;
     }

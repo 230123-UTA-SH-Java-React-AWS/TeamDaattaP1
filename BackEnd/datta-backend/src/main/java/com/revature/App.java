@@ -2,6 +2,11 @@ package com.revature;
 
 import com.revature.controller.PostController;
 import com.revature.controller.UserController;
+import com.revature.repositories.AccountsRepo;
+import com.revature.repositories.LoginCredsRepo;
+import com.revature.repositories.PostsRepo;
+import com.revature.service.AccountService;
+import com.revature.service.PostService;
 
 // import java.net.InetSocketAddress;
 
@@ -21,11 +26,12 @@ public final class App {
 
         // to allow the jwt token to get to the frontend, some cors thing
         app.before(ctx -> ctx.header("Access-Control-Expose-Headers", "Authorization"));
-
-        UserController userController = new UserController();
+        // UserController userController = new UserController(); ==== merge conflict, i think we dont need this one??
+        AccountService accountService = new AccountService(new LoginCredsRepo(), new AccountsRepo());
+        UserController userController = new UserController(accountService);
         userController.mapEndpoints(app);
 
-        PostController postController =  new PostController();
+        PostController postController =  new PostController(new PostService(new PostsRepo()));
         postController.mapEndpoints(app);
 
         app.start(8000);

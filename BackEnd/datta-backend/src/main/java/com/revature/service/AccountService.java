@@ -13,11 +13,15 @@ import com.revature.repositories.AccountsRepo;
 import com.revature.repositories.LoginCredsRepo;
 
 public class AccountService implements AccountServiceInterface, ServiceGenerics{
-    //perhaps make a repo in a constructor? or make a static repo? check on that later
-    //static repos are what makes sense to me -DP
-    //I agree on the static repo, just feels better -AB
-    private static LoginCredsRepo LCrepo = new LoginCredsRepo();
-    private static AccountsRepo Accrepo = new AccountsRepo();
+
+    private LoginCredsRepo LCrepo;
+    private AccountsRepo Accrepo;
+
+    public AccountService(LoginCredsRepo LCrepo, AccountsRepo Accrepo){
+        this.LCrepo = LCrepo;
+        this.Accrepo = Accrepo;
+    }
+
 
 
     /**
@@ -32,16 +36,26 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
     @Override
     public Map<String,Object> loginUser(String jsonLogin){
         // Log that a user is being logged in
+
+    ///Communicates with the repo to check if inputted credentials are in the database
+    @Override
+    public Account loginUser(String jsonLogin){
+    
+
         System.out.println("We're logging in a user");
 
         // Parse the JSON string into a LoginCred object
         System.out.println(jsonLogin);
+
+
+
         LoginCred newLogin = convertToObject(jsonLogin, LoginCred.class);
 
         // Extract the email and password from the LoginCred object
         String email  = newLogin.getEmail();
         System.out.println(email);
         String password = newLogin.getPassword();
+
 
         // Check if the user exists in the database
         if (LCrepo.checkLogin(email)){
@@ -58,39 +72,37 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
             response.put("token", token);
             response.put("user",user);
             return response;
+
+        //This NEEDS to check password too, java gets mad if you have the right email but wrong password - ab
+        if (LCrepo.checkLogin(email)){
+                System.out.println("Account exists woohoo"); // nice
+            return LCrepo.hashLogin(email, password);
         } else {
             // Throw an exception if the login attempt fails
             throw new NoSuchElementException("Login or Password is incorrect");
         }
+
     }
 
     @Override
     public void registerUser(String jsonUser) {
-        /* TODO: Register User: -TS
-         * 
-         * 1. Check to make sure the email is not already registered
-         * 
-         * 2. Create an Account from the jsonUser
-         * 
-         * 3. Send the Account to the AccountRepo to be stored in the accounts table
-         * 
-         * 4. Create a LoginCred fromt he username and password
-         * 
-         * 5. Send the LoginCred to the LoginCredsRepo to be stored in the logincredentials table
-         */
 
          //needs testing, assumes that jsonUser has both account info and login cred info
          //not sure if convertToObject will work like this. let me know if it doesn't -ab
         Account newAccount = convertToObject(jsonUser, Account.class);
         LoginCred newLogin = convertToObject(jsonUser, LoginCred.class);
 
+        //this isn't working for validating email, will get inside the if every time
         if(!LCrepo.getAll().containsKey(newLogin.getEmail())){
 //             Accrepo.RegisterAccount(newAccount);
 //             LCrepo.RegisterLogin(newLogin);
             String email  = newLogin.getEmail();
             String password = newLogin.getPassword();
             LCrepo.hashRegister(email, password);
-        } //else ??? brain melting ngl will come back to this tomorrow - ab
+        } else {
+            RuntimeException e = new RuntimeException("unable to register account, account with this login already exists");
+            throw e;
+        }
 
     }
 
@@ -106,13 +118,14 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
          * 
          * 4. If the Password is being changed, instead of Account use LoginCred
          */
+        Account newAccount = convertToObject(jsonAccount, Account.class);
+        Accrepo.changeAccountInfo(newAccount);
     }
     ///Maybe a convert from string method here, or several as needed
     
     //TODO: Return List of Users from UserService.searchUsers(searchJson) -TS
     @Override
     public List<Account> searchUsers(String jsonSearch) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'searchUsers'");
     }
 

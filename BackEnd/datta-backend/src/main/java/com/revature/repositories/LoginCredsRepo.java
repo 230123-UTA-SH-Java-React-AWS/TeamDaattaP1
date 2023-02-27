@@ -119,7 +119,20 @@ public class LoginCredsRepo {
                     accountId = rs.getInt(1);
                     System.out.println(rs.getInt(1));
 
+
                     // Insert a new row in the logincredentials table
+
+                // Get the newly inserted account id
+                int rowsaffected = statement.executeUpdate();
+                int accountId;
+                if (rowsaffected > 0) {
+                    // Will only fail if we have several users registering at the same time -TS
+                    PreparedStatement statement3  = con.prepareStatement("SELECT * FROM accounts ORDER BY accountid DESC LIMIT 1");
+                    ResultSet rs = statement3.executeQuery();
+                    if(rs.next()){
+                   accountId = rs.getInt(1);
+                   System.out.println(rs.getInt(1));
+
                     PreparedStatement statement2 = con.prepareStatement("INSERT INTO logincredentials (useremail, userpassword, userid) VALUES (?, ?, ?)");
                     statement2.setString(1, email);
                     statement2.setString(2, hashedPassword);
@@ -135,6 +148,7 @@ public class LoginCredsRepo {
         }
     }
 
+
     /**
      * Authenticates a user with a given email and password by checking the
      * corresponding hashed password in the database. If the credentials are
@@ -146,6 +160,10 @@ public class LoginCredsRepo {
      */
     public String hashLogin(String email, String password) {
         // Get a connection to the database
+
+    // Receives an email and password, and returns the account affiliated with that email/password
+    public Account hashLogin(String email, String password){
+
         Connection con = ConnectionUtil.getConnection();
 
         // Declare a variable to hold the JWT token

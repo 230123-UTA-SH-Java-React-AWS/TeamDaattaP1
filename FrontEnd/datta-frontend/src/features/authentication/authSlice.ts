@@ -121,21 +121,26 @@ export default authSlice.reducer;
 export const loginAsync = createAsyncThunk(
   "/login",
   async (loginPayload: LoginPayload) => {
-    const response = await fetch("http://localhost:8000/api/login", {
+    const response = await fetch("http://localhost:8000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(loginPayload),
     });
+    console.log(response.headers);
+
     if (response.ok) {
-      const data = await response.json();
-      const user = data.user;
+      const user = await response.json();
       const token = response.headers.get("Authorization") || "";
+      console.log(response.headers);
+      console.log(token);
       // Save the token to localStorage
       if (token) {
         localStorage.setItem("token", token);
       }
+      console.log(user);
+
       console.log("login post was successfull");
 
       return { user, token };
@@ -151,7 +156,7 @@ export const loginAsync = createAsyncThunk(
 export const registerAsync = createAsyncThunk(
   "auth/register",
   async (registerPayload: RegisterPayload) => {
-    const response = await fetch("http://localhost:8000/api/register", {
+    const response = await fetch("http://localhost:8000/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -159,8 +164,7 @@ export const registerAsync = createAsyncThunk(
       body: JSON.stringify(registerPayload),
     });
     if (response.ok) {
-      const data = await response.json();
-      const user = data.user;
+      const user = await response.json();
       const token = response.headers.get("Authorization") || "";
       // Save the token to localStorage
       if (token) {

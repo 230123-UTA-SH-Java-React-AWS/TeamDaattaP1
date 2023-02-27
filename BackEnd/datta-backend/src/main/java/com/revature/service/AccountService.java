@@ -1,10 +1,8 @@
 package com.revature.service;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
+
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -15,56 +13,83 @@ import com.revature.repositories.AccountsRepo;
 import com.revature.repositories.LoginCredsRepo;
 
 public class AccountService implements AccountServiceInterface, ServiceGenerics{
-    //perhaps make a repo in a constructor? or make a static repo? check on that later
-    //static repos are what makes sense to me -DP
-    //I agree on the static repo, just feels better -AB
-    private static LoginCredsRepo LCrepo = new LoginCredsRepo();
-    private static AccountsRepo Accrepo = new AccountsRepo();
 
-    ///Communicates with the repo to check if inputted credentials are in the database
-    //Will almost certainly need a return type later
-    @Override
-    public Account loginUser(String jsonLogin){ //We can throw an exception to UserController here -TS
-    
-        System.out.println("We're logging in a user");
-        LoginCred newLoginCred = convertToObject(jsonLogin, LoginCred.class);
-        System.out.println(newLoginCred.getEmail());
+    private LoginCredsRepo LCrepo;
+    private AccountsRepo Accrepo;
 
-        HashMap<String, LoginCred> AllLoginCreds = LCrepo.getAll();
-        System.out.println(AllLoginCreds);
-        LoginCred realCreds = null;
-        AllLoginCreds.forEach((key, value) -> {
-            System.out.println(value);
-
-        });
-        if (AllLoginCreds.containsKey(newLoginCred.getEmail()) //login exists
-             && AllLoginCreds.get(newLoginCred.getEmail()).getPassword().equals(newLoginCred.getPassword()) //password matches
-             ){
-                realCreds = AllLoginCreds.get(newLoginCred.getEmail());
-                System.out.println("The password matched woohoo");
-        } else {
-            RuntimeException e = new NoSuchElementException("Login or Password is incorrect");
-            throw e;
-        }
-        Account response = new Account();
-        response = Accrepo.getAccount(realCreds.getCredential_id());
-        return response;
+    public AccountService(LoginCredsRepo LCrepo, AccountsRepo Accrepo){
+        this.LCrepo = LCrepo;
+        this.Accrepo = Accrepo;
     }
 
+
+
+    /**
+     * Attempts to log in a user with the provided email and password by checking the corresponding
+     * hashed password in the database. If the login attempt is successful, generates a JWT token and
+     * returns it along with the user's account information.
+     *
+     * @param jsonLogin the JSON string containing the user's email and password
+     * @return a map containing the generated JWT token and the user's account information, or an
+     *         exception if the login attempt fails
+     */
+    @Override
+    public Map<String,Object> loginUser(String jsonLogin){
+        // Log that a user is being logged in
+        System.out.println("We're logging in a user");
+
+        // Parse the JSON string into a LoginCred object
+        System.out.println(jsonLogin);
+        LoginCred newLogin = convertToObject(jsonLogin, LoginCred.class);
+        // Extract the email and password from the LoginCred object
+        String email  = newLogin.getEmail();
+        System.out.println(email);
+        String password = newLogin.getPassword();
+
+        // Check if the user exists in the database
+        if (LCrepo.checkLogin(email)){
+            System.out.println("Account exists woohoo");
+            // Generate a JWT token for the user
+            String token = LCrepo.hashLogin(email,password);
+            // Get the user's account information from the database
+            Account user = LCrepo.getAccountByEmail(email);
+            // Create a response map containing the token and user information
+            Map<String,Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("user",user);
+            return response;
+
+        //This NEEDS to check password too, java gets mad if you have the right email but wrong password - ab
+            // LCRepo checks password with hashed password
+        } else {
+            // Throw an exception if the login attempt fails
+            throw new NoSuchElementException("Login or Password is incorrect");
+        }
+
+    }
+
+    /**
+     * Registers a new user by creating a new LoginCred instance and hashing the password.
+     *
+     * @param jsonUser the JSON string containing the user's account and login credential information
+     * in the format specified by the API
+     * @throws RuntimeException if the account with the given email already exists
+     */
     @Override
     public void registerUser(String jsonUser) {
 
-         //needs testing, assumes that jsonUser has both account info and login cred info
-         //not sure if convertToObject will work like this. let me know if it doesn't -ab
-        Account newAccount = convertToObject(jsonUser, Account.class);
+        // Convert JSON string to LoginCred object
         LoginCred newLogin = convertToObject(jsonUser, LoginCred.class);
+        String email  = newLogin.getEmail();
 
-        if(!LCrepo.getAll().containsKey(newLogin.getEmail())){
-             Accrepo.RegisterAccount(newAccount);
-             LCrepo.RegisterLogin(newLogin);
+        // Check if account with the given email already exists
+        if(!LCrepo.checkLogin(email)){
+            String password = newLogin.getPassword();
+            // If account does not exist, register user
+            LCrepo.hashRegister(email, password);
         } else {
-            RuntimeException e = new RuntimeException("unable to register account, account with this login already exists");
-            throw e;
+            // If account already exists, throw a runtime exception
+            throw new RuntimeException("unable to register account, account with this login already exists");
         }
 
     }

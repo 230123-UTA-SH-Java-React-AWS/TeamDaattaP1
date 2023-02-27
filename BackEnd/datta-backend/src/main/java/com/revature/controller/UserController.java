@@ -1,18 +1,25 @@
 package com.revature.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpSession;
 
 import com.revature.model.Account;
+import com.revature.repositories.AccountsRepo;
+import com.revature.repositories.LoginCredsRepo;
 import com.revature.service.AccountService;
 
 import io.javalin.Javalin;
 
-public class AccountController{
+public class UserController{
     
-    private AccountService userService = new AccountService();
+    private AccountService accountService;
+
+    public UserController(AccountService accountService){
+        this.accountService = accountService;
+    }
 
     // --------------- UserController - handles user login, logout, and register HTTP requests ---------------
     public void mapEndpoints(Javalin app) {
@@ -24,7 +31,7 @@ public class AccountController{
 
             // Try creating the new Account
             try{
-                userService.registerUser(userJson); // TODO: gives an exception?
+                accountService.registerUser(userJson); // TODO: gives an exception?
 
                 context.result("Account successfully created.");
                 context.status(201);    // 2xx success - 201 Created
@@ -41,26 +48,28 @@ public class AccountController{
 
         // ------------------------------ LOGIN EXISTING USER ------------------------------
 
-        app.post("/login", (context) ->{
+        app.post("/login", (context) -> {
 
-            // System.out.println(credentials);
+            try {
+                // Call the `loginUser` method of the `accountService` object and pass the request body as an argument.
+                Map<String, Object> response = accountService.loginUser(context.body());
 
-            try{
-                Account user = userService.loginUser(context.body());
+                // Set the user object into an HTTPSession object if needed.
+                HttpSession session = context.req.getSession();
+                session.setAttribute("user", response.get("user"));
 
-                // set the user object into an HTTPSession object TODO: Teagan, make this into a JWT Token instead -TS
-                HttpSession session = context.req.getSession(); // get the HTTPSession (there is a cookie utilized by the client)
-                // to identify the httpSession object associated with the client
-                session.setAttribute("user", user);
+                // Add the token to the Authorization header of the response.
+                context.header("Authorization","" +response.get("token"));
 
-                context.result("Welcome " + user.getFirstName() + " " + user.getLastName());
-                context.json(user);
+                // Set the response body to the user object and return 200 OK.
+                context.json(response.get("user"));
                 context.status(200);
-            } catch (NoSuchElementException e){//login or password was incorrect
+            } catch (NoSuchElementException e) {
+                // If the `loginUser` method throws a `NoSuchElementException`, return 404 Not Found.
                 context.status(404);
                 context.result(e.getMessage());
-            }
-            catch (Exception e){
+            } catch (Exception e) {
+                // If any other exception is thrown, return 400 Bad Request.
                 context.status(400);
                 context.result(e.getMessage());
             }
@@ -90,7 +99,7 @@ public class AccountController{
             //check if user is logged in
             if(user != null) {
                 // Try searching for accounts like 'searchJson'
-                List<Account> userList = userService.searchUsers(searchJson);
+                List<Account> userList = accountService.searchUsers(searchJson);
 
                 context.json(userList);
                 context.status(200);

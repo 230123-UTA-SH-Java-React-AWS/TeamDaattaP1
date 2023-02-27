@@ -1,9 +1,12 @@
 package com.revature;
 
 import com.revature.controller.PostController;
+import com.revature.controller.UserController;
+import com.revature.repositories.AccountsRepo;
+import com.revature.repositories.LoginCredsRepo;
 import com.revature.repositories.PostsRepo;
+import com.revature.service.AccountService;
 import com.revature.service.PostService;
-import com.revature.controller.AccountController;
 
 // import java.net.InetSocketAddress;
 
@@ -11,7 +14,6 @@ import com.revature.controller.AccountController;
 // import com.sun.net.httpserver.HttpServer;
 
 import io.javalin.Javalin;
-
 public final class App {
     private App() {
     }
@@ -22,7 +24,10 @@ public final class App {
             config.enableCorsForOrigin("http://localhost:3000");
         });
 
-        AccountController userController = new AccountController();
+        // to allow the jwt token to get to the frontend, some cors thing
+        app.before(ctx -> ctx.header("Access-Control-Expose-Headers", "Authorization"));
+        AccountService accountService = new AccountService(new LoginCredsRepo(), new AccountsRepo());
+        UserController userController = new UserController(accountService);
         userController.mapEndpoints(app);
 
         PostController postController =  new PostController(new PostService(new PostsRepo()));
@@ -30,4 +35,5 @@ public final class App {
 
         app.start(8000);
     }
+
 }

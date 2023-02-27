@@ -18,9 +18,13 @@ import {
   loginAsync,
   loginFailure,
   loginSuccess,
+  registerAsync,
+  registerFailure,
+  registerSuccess,
 } from "../features/authentication/authSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { RootState } from "../redux/store";
+import { useNavigate } from "react-router";
 
 function Authenticate() {
   const dispatch = useAppDispatch();
@@ -41,22 +45,35 @@ function Authenticate() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = async (data: any) => {
+
+  const navigate = useNavigate();
+  const onSubmitLogin = async (data: any) => {
     console.log(data);
     try {
       const { user, token } = await dispatch(loginAsync(data)).unwrap();
       dispatch(loginSuccess({ user, token }));
+      navigate("/profile"); //CHANGE TO HOME PAGE LATER WHEN ITS DONE
     } catch (error) {
       dispatch(loginFailure(error as string));
     }
   };
+  const onSubmitRegister = async (data: any) => {
+    console.log(data);
+    try {
+      const { user, token } = await dispatch(registerAsync(data)).unwrap();
+      dispatch(registerSuccess({ user, token }));
+      navigate("/profile"); //CHANGE TO HOME PAGE LATER WHEN ITS DONE
+    } catch (error) {
+      dispatch(registerFailure(error as string));
+    }
+  };
 
-  const auth = useAppSelector((state: RootState) => state.auth);
+  // const auth = useAppSelector((state: RootState) => state.auth);
 
-  if (auth.isAuthenticated) {
-    console.log(auth.user);
-    // Access the user data, for example, auth.user.name or auth.user.email
-  }
+  // if (auth.isAuthenticated) {
+  //   console.log(auth.user);
+  //   // Access the user data, for example, auth.user.name or auth.user.email
+  // }
 
   return (
     <AuthWindow>
@@ -124,7 +141,7 @@ function Authenticate() {
                 <Button
                   size="lg"
                   className="form-btn"
-                  onClick={handleSubmit(onSubmit)}
+                  onClick={handleSubmit(onSubmitLogin)}
                 >
                   Submit
                 </Button>
@@ -143,6 +160,10 @@ function Authenticate() {
                     placeholder="Type email here..."
                     fullWidth
                     type="email"
+                    {...register("email", {
+                      required: true,
+                      pattern: /^\S+@\S+$/i,
+                    })}
                   />
                 </GroupBox>
 
@@ -158,10 +179,15 @@ function Authenticate() {
                     placeholder="Type password here..."
                     fullWidth
                     type="password"
+                    {...register("password", {
+                      required: true,
+                      max: 16,
+                      min: 4,
+                    })}
                   />
                 </GroupBox>
 
-                <GroupBox className="groupBox" label="Confirm Password">
+                {/* <GroupBox className="groupBox" label="Confirm Password">
                   <Frame
                     variant="well"
                     style={{ width: "100%", marginBottom: ".5rem" }}
@@ -173,8 +199,12 @@ function Authenticate() {
                     fullWidth
                     type="password"
                   />
-                </GroupBox>
-                <Button size="lg" className="form-btn">
+                </GroupBox> */}
+                <Button
+                  size="lg"
+                  className="form-btn"
+                  onClick={handleSubmit(onSubmitRegister)}
+                >
                   Submit
                 </Button>
               </form>

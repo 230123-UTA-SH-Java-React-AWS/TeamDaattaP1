@@ -1,9 +1,13 @@
 package com.revature.controller;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import com.revature.middleware.ProfanityFilterMiddleware;
 import com.revature.model.Account;
 import com.revature.model.Post;
 import com.revature.service.PostService;
@@ -18,6 +22,7 @@ public class PostController {
         this.postService = postService;
     }
 
+    private final Set<String> bannedWords = new HashSet<>(Arrays.asList("badword1", "badword2", "badword3"));
     public void mapEndpoints(Javalin app) {
 
 
@@ -26,6 +31,10 @@ public class PostController {
          * ----------------------------------- P O S T S ----------------------------------
          * ================================================================================
          */
+
+        // apply profanity filter to all requests on the /post endpoint
+        // currently doesnt stop the post from being created. does filter it tho
+//        app.before("/post", new ProfanityFilterMiddleware());
 
 
         // ------------------------------ GET ALL POSTS FOR USER ------------------------------
@@ -59,6 +68,7 @@ public class PostController {
 
         app.post("/post", (context) -> {
             String postJson = context.body();
+
 
             try{
                 postService.createNewPost(postJson);

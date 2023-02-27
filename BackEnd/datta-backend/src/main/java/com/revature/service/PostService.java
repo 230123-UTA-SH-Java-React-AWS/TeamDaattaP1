@@ -1,7 +1,10 @@
 package com.revature.service;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -13,6 +16,7 @@ import com.revature.repositories.PostsRepo;
 public class PostService implements PostServiceInterface, ServiceGenerics{
 
     private PostsRepo postsRepo;
+    private final Set<String> bannedWords = new HashSet<>(Arrays.asList("badword1", "badword2", "badword3"));
 
     public PostService(PostsRepo postsRepo){
         this.postsRepo = postsRepo;
@@ -23,7 +27,18 @@ public class PostService implements PostServiceInterface, ServiceGenerics{
     public void createNewPost(String jsonPost){
 
         Post newPost = convertToObject(jsonPost, Post.class);
-        postsRepo.addPost(newPost);
+        // get the post content
+        String postContent = newPost.getContent().toLowerCase();
+        // check for bad words
+        for (String bannedWord : bannedWords) {
+            // if profanity is present, throw exception, else add the post
+            if (postContent.contains(bannedWord.toLowerCase())) {
+                throw new RuntimeException("Post contains profanity");
+            }else{
+                postsRepo.addPost(newPost);
+            }
+        }
+
         
     }
     

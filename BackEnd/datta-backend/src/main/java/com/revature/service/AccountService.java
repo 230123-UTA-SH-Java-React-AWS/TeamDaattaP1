@@ -19,30 +19,49 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
     private static LoginCredsRepo LCrepo = new LoginCredsRepo();
     private static AccountsRepo Accrepo = new AccountsRepo();
 
-    ///Communicates with the repo to check if inputted credentials are in the database
-    //Will almost certainly need a return type later
+
+    /**
+     * Attempts to log in a user with the provided email and password by checking the corresponding
+     * hashed password in the database. If the login attempt is successful, generates a JWT token and
+     * returns it along with the user's account information.
+     *
+     * @param jsonLogin the JSON string containing the user's email and password
+     * @return a map containing the generated JWT token and the user's account information, or an
+     *         exception if the login attempt fails
+     */
     @Override
-    public  Map<String,Object> loginUser(String jsonLogin){ //We can throw an exception to UserController here -TS
-    
+    public Map<String,Object> loginUser(String jsonLogin){
+        // Log that a user is being logged in
         System.out.println("We're logging in a user");
+
+        // Parse the JSON string into a LoginCred object
         System.out.println(jsonLogin);
         LoginCred newLogin = convertToObject(jsonLogin, LoginCred.class);
+
+        // Extract the email and password from the LoginCred object
         String email  = newLogin.getEmail();
         System.out.println(email);
         String password = newLogin.getPassword();
+
+        // Check if the user exists in the database
         if (LCrepo.checkLogin(email)){
             System.out.println("Account exists woohoo");
+
+            // Generate a JWT token for the user
             String token = LCrepo.hashLogin(email,password);
+
+            // Get the user's account information from the database
             Account user = LCrepo.getAccountByEmail(email);
 
+            // Create a response map containing the token and user information
             Map<String,Object> response = new HashMap<>();
             response.put("token", token);
             response.put("user",user);
             return response;
         } else {
+            // Throw an exception if the login attempt fails
             throw new NoSuchElementException("Login or Password is incorrect");
         }
-
     }
 
     @Override

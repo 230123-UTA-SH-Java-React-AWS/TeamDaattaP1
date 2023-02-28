@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8e59f55-6fe6-4811-84dc-a3a6378d5136" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/controller/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/controller/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/middleware/ProfanityFilterMiddleware.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/util/ProfanityFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/service/PostService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +66,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1677463782692</updated>
-      <workItem from="1677463784505" duration="13812000" />
+      <workItem from="1677463784505" duration="15334000" />
     </task>
     <servers />
   </component>

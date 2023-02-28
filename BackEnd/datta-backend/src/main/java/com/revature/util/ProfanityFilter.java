@@ -1,8 +1,7 @@
-package com.revature.middleware;
+package com.revature.util;
 
 import com.revature.model.Post;
 import io.javalin.http.Context;
-import io.javalin.http.Handler;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -12,13 +11,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ProfanityFilterMiddleware implements Handler {
+public class ProfanityFilter {
 
     private final Set<String> bannedWords = new HashSet<>(Arrays.asList("badword1", "badword2", "badword3"));
 
-    @Override
-    public void handle(Context ctx) throws Exception {
-
+    public void filterProfanity(Context ctx) {
         String requestBody = ctx.body();
         Post newPost = convertToObject(requestBody, Post.class);
         String postContent = newPost.getContent();

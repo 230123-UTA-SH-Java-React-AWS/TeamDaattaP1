@@ -34,10 +34,9 @@ public class PostService implements PostServiceInterface, ServiceGenerics{
             // if profanity is present, throw exception, else add the post
             if (postContent.contains(bannedWord.toLowerCase())) {
                 throw new RuntimeException("Post contains profanity");
-            }else{
-                postsRepo.addPost(newPost);
             }
         }
+        postsRepo.addPost(newPost);
 
         
     }

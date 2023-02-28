@@ -43,6 +43,7 @@ public class PostController {
             if(user != null) {
                 System.out.println("Getting post feed");
                 List<Post> postList = postService.getPostFeed();
+                // System.out.println(postList.get(1).getUserName());
 
                 context.json(postList);
                 context.status(200);
@@ -59,6 +60,8 @@ public class PostController {
 
         app.post("/post", (context) -> {
             String postJson = context.body();
+            System.out.println(postJson);
+            System.out.print("postJson Recieved at Post Controller");
 
             try{
                 postService.createNewPost(postJson);

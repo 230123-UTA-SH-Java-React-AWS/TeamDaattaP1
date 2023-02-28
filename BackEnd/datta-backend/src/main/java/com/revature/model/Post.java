@@ -7,7 +7,14 @@ public class Post {
     private java.sql.Timestamp likeTStamp;
     private int userID;
     private int ID;
+    private String userName;
 
+    public String getUserName() {
+        return userName;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
     public int getID() {
         return ID;
     }

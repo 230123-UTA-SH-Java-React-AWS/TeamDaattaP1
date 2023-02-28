@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { getPostsAsync, postListLoadFailure, postListLoadSuccess } from "../features/postfeed/postSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { RootState } from "../redux/store";
+//import { RootState } from "../redux/store";
 import Post from "./Post";
 
 function PostFeed () {
     interface Post {
+        userName: string;
         content: string;
         id: number;
         liked: boolean;
@@ -15,6 +16,7 @@ function PostFeed () {
     const dispatch = useAppDispatch();
     const [state, setState] = useState({
         postList: [{
+            userName: "",
             content: "",
             id: 0,
             liked: false,
@@ -33,7 +35,7 @@ function PostFeed () {
         }
     };
     
-    const postFeed = useAppSelector((state: RootState) => state.postList);
+    // const postFeed = useAppSelector((state: RootState) => state.postList);
 
     useEffect( () => {
         loadAllPosts();
@@ -43,7 +45,7 @@ function PostFeed () {
       <>
         { 
           state.postList.map((p) => (
-            <Post key={p.id} userID={p.userID} content={p.content}/>
+            <Post key={p.id} userID={p.userID} content={p.content} userName={p.userName}/>
           ))
         }
       </>

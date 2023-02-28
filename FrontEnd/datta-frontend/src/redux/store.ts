@@ -5,6 +5,7 @@ import authSlice, {
   loginWithToken,
 } from "../features/authentication/authSlice";
 import postSlice from "../features/postfeed/postSlice";
+import createPostSlice from "../features/createPost/createPostSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     darkMode: themeSlice,
     auth: authSlice,
     postList: postSlice,
+    createPost: createPostSlice
   },
 });
 

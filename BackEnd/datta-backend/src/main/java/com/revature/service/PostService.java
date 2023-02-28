@@ -21,10 +21,10 @@ public class PostService implements PostServiceInterface, ServiceGenerics{
     //Communicates with the repo to add a new post to the database
     @Override
     public void createNewPost(String jsonPost){
-
+        System.out.print(" --> Servicing new post");
         Post newPost = convertToObject(jsonPost, Post.class);
         postsRepo.addPost(newPost);
-        
+        System.out.print(" --> Post successfully added to database");
     }
     
     @Override

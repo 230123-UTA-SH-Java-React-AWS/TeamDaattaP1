@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { Button, Frame, GroupBox, Tab, TabBody, Tabs, TextInput, Toolbar, Window, WindowContent, WindowHeader } from "react95";
+import { Button, GroupBox, Tab, TabBody, Tabs, Toolbar, Window, WindowContent, WindowHeader } from "react95";
 import styled from "styled-components";
 
 interface PostProps {
+  userName: string,
   userID: number,
   content: string
 }
 
-function Post({userID, content}:PostProps) {
+function Post({userName, userID, content}:PostProps) {
 
   const [state, setState] = useState({
     activeTab: 0,
@@ -25,7 +26,7 @@ function Post({userID, content}:PostProps) {
     <>
       <PostWindow resizable className="window" style={{ marginBottom: 20 }}>
         <WindowHeader className="window-title">
-          <span>Username Here {userID}</span>
+          <span>{(userName !== "") && userName}{(userName === " ") && "userID:" + userID}</span>
           <Button>&#10006;</Button>
         </WindowHeader>
         <Toolbar>

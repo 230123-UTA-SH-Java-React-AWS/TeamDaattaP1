@@ -1,11 +1,11 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { useAxios } from "./../../hooks/useAxios";
 
 interface PostListObject {
     [postID: number]: Post;
 }
 
 interface Post {
+    username: string;
     content: string;
     id: number;
     liked: boolean;

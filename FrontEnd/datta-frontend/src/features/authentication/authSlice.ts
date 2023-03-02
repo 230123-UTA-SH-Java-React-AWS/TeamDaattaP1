@@ -138,7 +138,7 @@ export const loginAsync = createAsyncThunk(
       // Save the token to localStorage
       if (token) {
         localStorage.setItem("token", token);
-        localStorage.setItem("userid", user.account_id)
+        localStorage.setItem("userid", user.account_id);
       }
       console.log(user);
 
@@ -170,6 +170,7 @@ export const registerAsync = createAsyncThunk(
       // Save the token to localStorage
       if (token) {
         localStorage.setItem("token", token);
+        localStorage.setItem("userid", user.account_id);
       }
       return { user, token };
     } else {

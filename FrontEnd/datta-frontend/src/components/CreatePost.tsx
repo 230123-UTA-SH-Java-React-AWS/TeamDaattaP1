@@ -63,7 +63,6 @@ function CreatePost() {
         <WindowContent>
           <form>
             <GroupBox className="groupBox" label="User's new post">
-              {/* Not sure how to make this bigger */}
               <TextInput
                 placeholder="New post..."
                 multiline
@@ -71,8 +70,11 @@ function CreatePost() {
                 fullWidth
                 {...register("content", {
                   required: true,
+                  pattern: /\S/i,
+                  minLength: 1,
                 })}
               />
+              {errors.content && <p>Your post contains only spaces.</p>}
             </GroupBox>
 
             <Button

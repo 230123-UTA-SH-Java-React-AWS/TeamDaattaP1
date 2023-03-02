@@ -67,9 +67,10 @@ export const postCreateAsync = createAsyncThunk(
             const postid = await response.json();
             return {postid};
         } else {
-            console.log("failed to create new post");
+            const text = await response.text();
+            console.log(response.status, text);
             
-            throw new Error("Failed to create new Post");
+            throw new Error(text ? text : "Failed to create new post");
         }
     }
 )

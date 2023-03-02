@@ -58,7 +58,6 @@ public class PostController {
         app.post("/post", (context) -> {
             String postJson = context.body();
             System.out.println(postJson);
-            System.out.print("postJson Recieved at Post Controller");
 
 
             try{
@@ -66,8 +65,11 @@ public class PostController {
 
                 context.json(newPostID);
                 context.status(201);    // 2xx success - 201 Created
-            } catch (Exception e){
+            } catch (RuntimeException e){
                 context.result(e.getMessage()); // print exception message
+                context.status(400); // Bad words
+            } catch (Exception e){
+                context.result(e.getMessage());
                 context.status(500); // 5xx server errors - 500 Internal Server Error
             }
         });

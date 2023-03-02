@@ -10,6 +10,7 @@ import Post from "./Post";
 
 function PostFeed() {
   interface Post {
+    userName: string;
     content: string;
     id: number;
     liked: boolean;
@@ -37,17 +38,6 @@ function PostFeed() {
       dispatch(postListLoadFailure(error as string));
     }
   };
-
-    const loadAllPosts = async () => {
-        try {
-            const { postListObject } = await dispatch(getPostsAsync()).unwrap();
-            dispatch(postListLoadSuccess(postListObject));
-            const postList:Post[] = Object.values(postListObject);
-            setState({postList});
-        } catch (error) {
-            dispatch(postListLoadFailure(error as string));
-        }
-    };
     
     // const postFeed = useAppSelector((state: RootState) => state.postList);
 

@@ -69,6 +69,9 @@ function Navbar() {
               <NavLink to={"/"}>
                 <NavButton>Posts</NavButton>
               </NavLink>
+              <NavLink to={"/createPost"}>
+                <NavButton>Create Post</NavButton>
+              </NavLink>
             </>
           )}
           {theme == original ? (

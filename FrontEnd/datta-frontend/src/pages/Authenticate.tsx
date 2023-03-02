@@ -26,6 +26,9 @@ import { useAppDispatch } from "../redux/hooks";
 import { useNavigate } from "react-router";
 
 function Authenticate() {
+  //errors
+  const [error, setError] = useState("");
+
   //redux
   const dispatch = useAppDispatch();
 
@@ -50,13 +53,17 @@ function Authenticate() {
 
   const navigate = useNavigate();
   const onSubmitLogin = async (data: any) => {
+    setError("");
     console.log(data);
     try {
       const { user, token } = await dispatch(loginAsync(data)).unwrap();
       dispatch(loginSuccess({ user, token }));
       navigate("/");
-    } catch (error) {
-      dispatch(loginFailure(error as string));
+    } catch (error: any) {
+      console.log(error);
+
+      dispatch(loginFailure(error));
+      setError(error.message);
     }
   };
   const onSubmitRegister = async (data: any) => {
@@ -65,8 +72,9 @@ function Authenticate() {
       const { user, token } = await dispatch(registerAsync(data)).unwrap();
       dispatch(registerSuccess({ user, token }));
       navigate("/");
-    } catch (error) {
-      dispatch(registerFailure(error as string));
+    } catch (error: any) {
+      dispatch(registerFailure(error));
+      setError(error.message);
     }
   };
 
@@ -142,6 +150,7 @@ function Authenticate() {
                       contain atleast 1 number
                     </p>
                   )}
+                  {error.length > 0 && <p>{error}</p>}
                 </GroupBox>
                 <Button
                   size="lg"
@@ -193,6 +202,7 @@ function Authenticate() {
                       contain atleast 1 number
                     </p>
                   )}
+                  {error.length > 0 && <p>{error}</p>}
                 </GroupBox>
 
                 <Button

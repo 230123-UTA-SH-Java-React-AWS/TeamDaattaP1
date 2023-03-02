@@ -138,7 +138,7 @@ export const loginAsync = createAsyncThunk(
       // Save the token to localStorage
       if (token) {
         localStorage.setItem("token", token);
-        localStorage.setItem("userid", user.account_id)
+        localStorage.setItem("userid", user.account_id);
       }
       console.log(user);
 
@@ -147,8 +147,10 @@ export const loginAsync = createAsyncThunk(
       return { user, token };
     } else {
       console.log("failed to log in");
+      const text = await response.text();
+      console.log(response.status, text);
 
-      throw new Error("Failed to log in");
+      throw new Error(text ? text : "Failed to log in");
     }
   }
 );
@@ -170,10 +172,14 @@ export const registerAsync = createAsyncThunk(
       // Save the token to localStorage
       if (token) {
         localStorage.setItem("token", token);
+        localStorage.setItem("userid", user.account_id);
       }
       return { user, token };
     } else {
-      throw new Error("Failed to register");
+      const text = await response.text();
+      console.log(response.status, text);
+
+      throw new Error(text ? text : "Failed to register");
     }
   }
 );

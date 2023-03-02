@@ -51,7 +51,7 @@ function Authenticate() {
     try {
       const { user, token } = await dispatch(loginAsync(data)).unwrap();
       dispatch(loginSuccess({ user, token }));
-      navigate("/profile"); //CHANGE TO HOME PAGE LATER WHEN ITS DONE
+      navigate("/");
     } catch (error) {
       dispatch(loginFailure(error as string));
     }
@@ -61,7 +61,7 @@ function Authenticate() {
     try {
       const { user, token } = await dispatch(registerAsync(data)).unwrap();
       dispatch(registerSuccess({ user, token }));
-      navigate("/profile"); //CHANGE TO HOME PAGE LATER WHEN ITS DONE
+      navigate("/");
     } catch (error) {
       dispatch(registerFailure(error as string));
     }

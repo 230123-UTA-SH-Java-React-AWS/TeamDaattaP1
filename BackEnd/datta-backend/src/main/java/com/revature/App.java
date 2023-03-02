@@ -16,9 +16,20 @@ public final class App {
     public static void main(String[] args) throws Exception{
 
         Javalin app = Javalin.create(config -> {
-            config.enableCorsForOrigin("http://localhost:3000");
+//            config.enableCorsForAllOrigins();
+//            config.enableCorsForOrigin("http://localhost:3000");
         });
 
+        app.before((ctx) -> {
+            ctx.header("Access-Control-Allow-Origin", "*");
+            ctx.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            ctx.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
+        });
+
+        app.options("/*", (ctx) -> {
+            ctx.status(204);
+            ctx.result("");
+        });
         // to allow the jwt token to get to the frontend, some cors thing
         app.before(ctx -> ctx.header("Access-Control-Expose-Headers", "Authorization"));
         AccountService accountService = new AccountService(new LoginCredsRepo(), new AccountsRepo());

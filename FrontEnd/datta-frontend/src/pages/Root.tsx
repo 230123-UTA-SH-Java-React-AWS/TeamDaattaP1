@@ -8,6 +8,9 @@ import { selectTheme } from "../features/darkMode/themeSlice";
 import { useAppSelector } from "../redux/hooks";
 import { Outlet } from "react-router-dom";
 import "../App.css";
+import Helmet from "react-helmet";
+import original from "react95/dist/themes/original";
+
 // WIN 95 styles
 const GlobalStyles = createGlobalStyle`
   @font-face {
@@ -28,11 +31,16 @@ const GlobalStyles = createGlobalStyle`
 `;
 function Root() {
   const theme = useAppSelector(selectTheme);
+  const bodyStyle =
+    theme == original
+      ? "background-color : #fff"
+      : "background-color : rgb(24, 26, 27)";
 
   return (
     <>
       <GlobalStyles />
       <ThemeProvider theme={theme}>
+        <Helmet bodyAttributes={{ style: bodyStyle }} />
         <Navbar />
         <div className="App">
           <Outlet />

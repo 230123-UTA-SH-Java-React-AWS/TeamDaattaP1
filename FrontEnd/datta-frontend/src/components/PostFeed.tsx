@@ -30,14 +30,19 @@ function PostFeed() {
     ],
   });
 
+  const [error, setError] = useState("");
+
   const loadAllPosts = async () => {
+    setError("");
+
     try {
       const { postListObject } = await dispatch(getPostsAsync()).unwrap();
       dispatch(postListLoadSuccess(postListObject));
       const postList: Post[] = Object.values(postListObject);
       setState({ postList });
-    } catch (error) {
-      dispatch(postListLoadFailure(error as string));
+    } catch (error: any) {
+      dispatch(postListLoadFailure(error));
+      setError(error.message);
     }
   };
 
@@ -49,6 +54,7 @@ function PostFeed() {
 
   return (
     <>
+      {error.length > 0 && <p>{error}</p>}
       {state.postList
         .slice(0)
         .reverse()

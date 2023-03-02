@@ -1,81 +1,78 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 interface PostListObject {
-    [postID: number]: Post;
+  [postID: number]: Post;
 }
 
 interface Post {
-    username: string;
-    content: string;
-    id: number;
-    liked: boolean;
-    userID: number;
+  username: string;
+  content: string;
+  id: number;
+  liked: boolean;
+  userID: number;
 }
 
 interface PostState {
-    postListObject: PostListObject | null;
-    error: string | null
+  postListObject: PostListObject | null;
+  error: string | null;
 }
 
 const initialState: PostState = {
-    postListObject: null,
-    error: null
-}
+  postListObject: null,
+  error: null,
+};
 
 const postSlice = createSlice({
-    name: "post",
-    initialState,
-    reducers: {
-        postListLoadSuccess: (
-            state,
-            action: PayloadAction<{postListObject: PostListObject}>
-        ) => {
-            state.postListObject = action.payload.postListObject;
-            state.error = null;
-        },
-        postListLoadFailure: (state, action: PayloadAction<string>) => {
-            state.postListObject = null;
-            state.error = action.payload;
-        }
+  name: "post",
+  initialState,
+  reducers: {
+    postListLoadSuccess: (
+      state,
+      action: PayloadAction<{ postListObject: PostListObject }>
+    ) => {
+      state.postListObject = action.payload.postListObject;
+      state.error = null;
     },
-    extraReducers: (builder) => {
-        builder.addCase(getPostsAsync.fulfilled, (state, action) => {
-            state.postListObject = action.payload;
-            state.error = null;
-        });
-        builder.addCase(getPostsAsync.rejected, (state, action) => {
-            state.postListObject = null;
-            state.error = action.error.message || "Something went wrong.";
-        });
-    }
+    postListLoadFailure: (state, action: PayloadAction<string>) => {
+      state.postListObject = null;
+      state.error = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getPostsAsync.fulfilled, (state, action) => {
+      state.postListObject = action.payload;
+      state.error = null;
+    });
+    builder.addCase(getPostsAsync.rejected, (state, action) => {
+      state.postListObject = null;
+      state.error = action.error.message || "Something went wrong.";
+    });
+  },
 });
 
-export const {
-    postListLoadSuccess,
-    postListLoadFailure
-} = postSlice.actions;
+export const { postListLoadSuccess, postListLoadFailure } = postSlice.actions;
 
 export default postSlice.reducer;
 
-export const getPostsAsync = createAsyncThunk(
-    "/post",
-    async () => {
-        const response = await fetch("http://localhost:8000/post", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        
-        if(response.ok) {
-            const postListObject = await response.json();
+export const getPostsAsync = createAsyncThunk("/post", async () => {
+  const response = await fetch("http://localhost:8000/post", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-            return { postListObject };
-        } else {
-            throw new Error("Failed to load Post Feed");
-        }
-    }
-)
+  if (response.ok) {
+    const postListObject = await response.json();
+
+    return { postListObject };
+  } else {
+    const text = await response.text();
+    console.log(response.status, text);
+
+    throw new Error(text ? text : "Failed to load post feed");
+  }
+});
 
 // const [loading, data, error, request] = useAxios<PostListObject>({
 //     method: "GET",

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Button,
   Frame,
@@ -22,8 +22,7 @@ import {
   registerFailure,
   registerSuccess,
 } from "../features/authentication/authSlice";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { RootState } from "../redux/store";
+import { useAppDispatch } from "../redux/hooks";
 import { useNavigate } from "react-router";
 
 function Authenticate() {

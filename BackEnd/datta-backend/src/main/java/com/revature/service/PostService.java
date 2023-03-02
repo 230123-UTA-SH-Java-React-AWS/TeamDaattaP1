@@ -24,7 +24,8 @@ public class PostService implements PostServiceInterface, ServiceGenerics{
 
     //Communicates with the repo to add a new post to the database
     @Override
-    public void createNewPost(String jsonPost){
+
+    public int createNewPost(String jsonPost){
         //read bad words from file
         InputStream inputStream = getClass().getResourceAsStream("/badwords.txt");
         Scanner scanner = new Scanner(inputStream);
@@ -33,7 +34,10 @@ public class PostService implements PostServiceInterface, ServiceGenerics{
             String[] words = line.split(",");
             bannedWords.addAll(Arrays.asList(words));
         }
+
         scanner.close();
+
+        System.out.print(" --> Servicing new post");
 
         Post newPost = convertToObject(jsonPost, Post.class);
         // get the post content
@@ -46,8 +50,9 @@ public class PostService implements PostServiceInterface, ServiceGenerics{
             }
         }
         postsRepo.addPost(newPost);
+        System.out.print(" --> Post successfully added to database");
+        return postsRepo.getLastPost().getID();
 
-        
     }
     
     @Override

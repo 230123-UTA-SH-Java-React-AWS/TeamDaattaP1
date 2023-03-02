@@ -8,11 +8,6 @@ import com.revature.repositories.PostsRepo;
 import com.revature.service.AccountService;
 import com.revature.service.PostService;
 
-// import java.net.InetSocketAddress;
-
-// import com.revature.controller.PostController;
-// import com.sun.net.httpserver.HttpServer;
-
 import io.javalin.Javalin;
 public final class App {
     private App() {

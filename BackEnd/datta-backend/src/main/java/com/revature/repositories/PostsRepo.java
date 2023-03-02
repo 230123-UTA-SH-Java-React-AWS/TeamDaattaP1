@@ -16,6 +16,7 @@ public class PostsRepo implements PostsInterface {
 
     @Override
     public void addPost(Post post) {
+        System.out.print(" --> Post added to repo");
         String sql = "INSERT INTO posts (userid, postcontent, timeofpost) VALUES (?, ?, ?)";
 
         try(Connection connection = ConnectionUtil.getConnection()){
@@ -38,7 +39,7 @@ public class PostsRepo implements PostsInterface {
     public List<Post> getAllPosts() {
         System.out.println("Retrieving Posts from DB");
         ArrayList<Post> postList = new ArrayList<Post>();
-        String sql = "SELECT postid, userid, postcontent, timeofpost FROM posts";
+        String sql = "SELECT a.firstname, a.lastname, p.postid, p.userid, p.postcontent, p.timeofpost FROM posts p INNER JOIN accounts a ON a.accountid = p.userid";
 
         try (Connection con = ConnectionUtil.getConnection()) {
 
@@ -47,6 +48,7 @@ public class PostsRepo implements PostsInterface {
 
             while(rs.next()){
                 Post newPost = new Post();
+                newPost.setUserName(rs.getString("firstname") + " " + rs.getString("lastname"));
                 newPost.setID(rs.getInt("postid"));
                 newPost.setUserID(rs.getInt("userid"));
                 newPost.setContent(rs.getString("postcontent"));
@@ -63,5 +65,26 @@ public class PostsRepo implements PostsInterface {
         return postList;
     }
     
+    public Post getLastPost() {
+        Post lastPost = new Post();
+        String sql = "SELECT * FROM posts p ORDER BY p.postid DESC LIMIT 1";
 
+        try (Connection con = ConnectionUtil.getConnection()) {
+
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while(rs.next()){
+                lastPost.setID(rs.getInt("postid"));
+                lastPost.setUserID(rs.getInt("userid"));
+                lastPost.setContent(rs.getString("postcontent"));
+                lastPost.settStamp(rs.getTimestamp("timeofpost"));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException("Error receiving and processing posts from database in PostsRepo");
+        }
+
+        return lastPost;
+    }
 }

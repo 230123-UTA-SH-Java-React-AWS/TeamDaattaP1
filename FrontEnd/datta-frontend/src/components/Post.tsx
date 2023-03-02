@@ -15,12 +15,15 @@ import {
 } from "react95";
 import styled from "styled-components";
 
+
 interface PostProps {
-  userID: number;
-  content: string;
+  userName: string,
+  userID: number,
+  content: string
 }
 
-function Post({ userID, content }: PostProps) {
+function Post({userName, userID, content}:PostProps) {
+
   const [state, setState] = useState({
     activeTab: 0,
   });
@@ -45,7 +48,7 @@ function Post({ userID, content }: PostProps) {
         }}
       >
         <WindowHeader className="window-title">
-          <span>Username Here {userID}</span>
+          <span>{(userName !== "") && userName}{(userName === " ") && "userID:" + userID}</span>
           <Button>&#10006;</Button>
         </WindowHeader>
         <Toolbar>

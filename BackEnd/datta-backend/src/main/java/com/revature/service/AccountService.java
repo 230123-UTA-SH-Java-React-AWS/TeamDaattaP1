@@ -49,10 +49,14 @@ public class AccountService implements AccountServiceInterface, ServiceGenerics{
         // Check if the user exists in the database
         if (LCrepo.checkLogin(email)){
             System.out.println("Account exists woohoo");
-            // Generate a JWT token for the user
-            String token = LCrepo.hashLogin(email,password);
+        }
+
+        // Generate a JWT token for the user
+        String token = LCrepo.hashLogin(email,password);
+        if(token != null){ // if the token is not null, the password is correct
             // Get the user's account information from the database
             Account user = LCrepo.getAccountByEmail(email);
+            System.out.println("ID: " + user.getAccount_id() + " | First Name: " + user.getFirstName());
             // Create a response map containing the token and user information
             Map<String,Object> response = new HashMap<>();
             response.put("token", token);

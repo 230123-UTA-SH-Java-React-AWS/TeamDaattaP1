@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import com.revature.model.Account;
 import com.revature.model.Post;
 import com.revature.service.PostService;
+import com.revature.util.JwtUtil;
 
 import io.javalin.Javalin;
 
@@ -28,29 +29,21 @@ public class PostController {
          */
 
 
-        // ------------------------------ GET ALL POSTS FOR USER ------------------------------
+        // ------------------------------ GET ALL POSTS ------------------------------
 
         app.get("/post", (context) -> {
-            // get the logged in user
-            HttpSession httpSession = context.req.getSession();
-            Account user = (Account) httpSession.getAttribute("user");
+            System.out.println("Getting post feed");
+            List<Post> postList = postService.getPostFeed();
+            // System.out.println(postList.get(1).getUserName());
 
-            //Delete this later and bring back the else
-            user = new Account();
-
-
-            //check if user is logged in
-            if(user != null) {
-                System.out.println("Getting post feed");
-                List<Post> postList = postService.getPostFeed();
-                // System.out.println(postList.get(1).getUserName());
+            if(postList.size() > 0){
 
                 context.json(postList);
                 context.status(200);
                 
-            // } else {
-            //     context.result("You are not logged in");
-            //     context.status(401); //Error status  
+            } else {
+                context.result("Error loading posts");
+                context.status(500); //Error status  
             }
         });
 
@@ -64,9 +57,9 @@ public class PostController {
             System.out.print("postJson Recieved at Post Controller");
 
             try{
-                postService.createNewPost(postJson);
+                int newPostID = postService.createNewPost(postJson);
 
-                context.result("Post successfully created.");
+                context.json(newPostID);
                 context.status(201);    // 2xx success - 201 Created
             } catch (Exception e){
                 context.result(e.getMessage()); // print exception message

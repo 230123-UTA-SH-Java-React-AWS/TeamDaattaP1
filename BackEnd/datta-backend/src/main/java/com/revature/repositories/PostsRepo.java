@@ -65,5 +65,26 @@ public class PostsRepo implements PostsInterface {
         return postList;
     }
     
+    public Post getLastPost() {
+        Post lastPost = new Post();
+        String sql = "SELECT * FROM posts p ORDER BY p.postid DESC LIMIT 1";
 
+        try (Connection con = ConnectionUtil.getConnection()) {
+
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while(rs.next()){
+                lastPost.setID(rs.getInt("postid"));
+                lastPost.setUserID(rs.getInt("userid"));
+                lastPost.setContent(rs.getString("postcontent"));
+                lastPost.settStamp(rs.getTimestamp("timeofpost"));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException("Error receiving and processing posts from database in PostsRepo");
+        }
+
+        return lastPost;
+    }
 }

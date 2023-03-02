@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { Button, GroupBox, TextInput, Toolbar, Window, WindowContent, WindowHeader } from "react95";
 import styled from "styled-components";
 import { postCreateAsync, postCreateFailure, postCreateSuccess } from "../features/createPost/createPostSlice";
@@ -22,12 +22,12 @@ function CreatePost() {
     
         try{
             const {postid} = await dispatch(postCreateAsync(data)).unwrap();
-            dispatch(postCreateSuccess({postid}))
+            dispatch(postCreateSuccess({postid}));
             navigate("/");
         } catch(error) {
             dispatch(postCreateFailure(error as string));
         }
-    }
+    };
     
     //const createPost = useAppSelector((state:RootState) => state.postList);
     return (

@@ -37,8 +37,6 @@ public class PostService implements PostServiceInterface, ServiceGenerics{
 
         scanner.close();
 
-        System.out.print(" --> Servicing new post");
-
         Post newPost = convertToObject(jsonPost, Post.class);
         // get the post content
         String postContent = newPost.getContent().toLowerCase();
@@ -46,11 +44,10 @@ public class PostService implements PostServiceInterface, ServiceGenerics{
         for (String bannedWord : bannedWords) {
             // if profanity is present, throw exception, else add the post
             if (postContent.contains(bannedWord.toLowerCase())) {
-                throw new RuntimeException("Post contains profanity");
+                throw new RuntimeException("Bad Request - Post Contains Profanity");
             }
         }
         postsRepo.addPost(newPost);
-        System.out.print(" --> Post successfully added to database");
         return postsRepo.getLastPost().getID();
 
     }

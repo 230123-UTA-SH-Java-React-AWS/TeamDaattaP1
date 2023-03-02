@@ -28,6 +28,10 @@ public class PostController {
          * ================================================================================
          */
 
+        // apply profanity filter to all requests on the /post endpoint
+        // currently doesnt stop the post from being created. does filter it tho
+//        app.before("/post", new ProfanityFilter());
+
 
         // ------------------------------ GET ALL POSTS ------------------------------
 
@@ -55,6 +59,7 @@ public class PostController {
             String postJson = context.body();
             System.out.println(postJson);
             System.out.print("postJson Recieved at Post Controller");
+
 
             try{
                 int newPostID = postService.createNewPost(postJson);

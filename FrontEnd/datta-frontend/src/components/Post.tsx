@@ -1,14 +1,26 @@
 import { useState } from "react";
-import { Button, Frame, GroupBox, Tab, TabBody, Tabs, TextInput, Toolbar, Window, WindowContent, WindowHeader } from "react95";
+import {
+  Button,
+  Frame,
+  GroupBox,
+  ScrollView,
+  Tab,
+  TabBody,
+  Tabs,
+  TextInput,
+  Toolbar,
+  Window,
+  WindowContent,
+  WindowHeader,
+} from "react95";
 import styled from "styled-components";
 
 interface PostProps {
-  userID: number,
-  content: string
+  userID: number;
+  content: string;
 }
 
-function Post({userID, content}:PostProps) {
-
+function Post({ userID, content }: PostProps) {
   const [state, setState] = useState({
     activeTab: 0,
   });
@@ -23,7 +35,15 @@ function Post({userID, content}:PostProps) {
 
   return (
     <>
-      <PostWindow resizable className="window" style={{ marginBottom: 20 }}>
+      <PostWindow
+        resizable
+        className="window"
+        style={{
+          marginBottom: 20,
+          marginLeft: 20,
+          width: "45%",
+        }}
+      >
         <WindowHeader className="window-title">
           <span>Username Here {userID}</span>
           <Button>&#10006;</Button>
@@ -44,21 +64,23 @@ function Post({userID, content}:PostProps) {
             <Tab value={0}>Post</Tab>
             <Tab value={1}>Comments</Tab>
           </Tabs>
-          <TabBody style={{ height: 600 }}>
+          <TabBody>
             {activeTab === 0 && (
-              <p>
-                {content}
-              </p>
+              <ScrollView style={{ height: "300px" }}>
+                <p>{content}</p>
+              </ScrollView>
             )}
             {activeTab === 1 && (
-              <GroupBox className="groupBox" label="User 1">
-                <p>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Consectetur totam voluptates delectus mollitia expedita modi
-                  repudiandae ex deserunt voluptate, deleniti praesentium aliquid, id
-                  odio quam nobis ea nulla soluta porro?
-                </p>
-              </GroupBox>
+              <ScrollView style={{ height: "300px" }}>
+                <GroupBox className="groupBox" label="User 1">
+                  <p>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Consectetur totam voluptates delectus mollitia expedita modi
+                    repudiandae ex deserunt voluptate, deleniti praesentium
+                    aliquid, id odio quam nobis ea nulla soluta porro?
+                  </p>
+                </GroupBox>
+              </ScrollView>
             )}
           </TabBody>
         </WindowContent>

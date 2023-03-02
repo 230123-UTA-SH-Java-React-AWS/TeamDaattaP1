@@ -21,7 +21,6 @@ public class AccountController{
 
     // --------------- UserController - handles user login, logout, and register HTTP requests ---------------
     public void mapEndpoints(Javalin app) {
-
         // ------------------------------ REGISTER A NEW USER ------------------------------
 
         app.post("/register", (context) ->{

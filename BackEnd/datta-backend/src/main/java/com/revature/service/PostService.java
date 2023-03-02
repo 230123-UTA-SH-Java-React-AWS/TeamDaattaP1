@@ -3,6 +3,7 @@ package com.revature.service;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 import org.codehaus.jackson.JsonParseException;
@@ -25,19 +26,14 @@ public class PostService implements PostServiceInterface, ServiceGenerics{
     @Override
     public void createNewPost(String jsonPost){
         //read bad words from file
-        try {
-            File file = new File("src/main/java/com/revature/util/badwords.txt");
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] words = line.split(",");
-                bannedWords.addAll(Arrays.asList(words));
-            }
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("Bad words file not found");
-            e.printStackTrace();
+        InputStream inputStream = getClass().getResourceAsStream("/badwords.txt");
+        Scanner scanner = new Scanner(inputStream);
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            String[] words = line.split(",");
+            bannedWords.addAll(Arrays.asList(words));
         }
+        scanner.close();
 
         Post newPost = convertToObject(jsonPost, Post.class);
         // get the post content

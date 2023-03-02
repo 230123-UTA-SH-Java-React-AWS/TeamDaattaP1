@@ -147,8 +147,10 @@ export const loginAsync = createAsyncThunk(
       return { user, token };
     } else {
       console.log("failed to log in");
+      const text = await response.text();
+      console.log(response.status, text);
 
-      throw new Error("Failed to log in");
+      throw new Error(text ? text : "Failed to log in");
     }
   }
 );
@@ -174,7 +176,10 @@ export const registerAsync = createAsyncThunk(
       }
       return { user, token };
     } else {
-      throw new Error("Failed to register");
+      const text = await response.text();
+      console.log(response.status, text);
+
+      throw new Error(text ? text : "Failed to register");
     }
   }
 );

@@ -15,13 +15,14 @@ import {
   postCreateFailure,
   postCreateSuccess,
 } from "../features/createPost/createPostSlice";
-import { useAppDispatch } from "../redux/hooks";
-import React from "react";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import React, { useState } from "react";
+import { RootState } from "../redux/store";
 //import { RootState } from "../redux/store";
 
 function CreatePost() {
   const dispatch = useAppDispatch();
-
+  const [error, setError] = useState("");
   const {
     register,
     handleSubmit,
@@ -30,18 +31,20 @@ function CreatePost() {
 
   const navigate = useNavigate();
   const onSubmitPost = async (data: any) => {
+    setError("");
+
     console.log(data);
 
     try {
       const { postid } = await dispatch(postCreateAsync(data)).unwrap();
       dispatch(postCreateSuccess({ postid }));
       navigate("/");
-    } catch (error) {
-      dispatch(postCreateFailure(error as string));
+    } catch (error: any) {
+      dispatch(postCreateFailure(error));
+      setError(error.message);
     }
   };
 
-  //const createPost = useAppSelector((state:RootState) => state.postList);
   return (
     <PostWindow>
       <Window resizable className="window" style={{ marginBottom: 20 }}>
@@ -75,6 +78,7 @@ function CreatePost() {
                 })}
               />
               {errors.content && <p>Your post contains only spaces.</p>}
+              {error.length > 0 && <p>{error}</p>}
             </GroupBox>
 
             <Button

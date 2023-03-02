@@ -66,8 +66,9 @@ function CreatePost() {
               {/* Not sure how to make this bigger */}
               <TextInput
                 placeholder="New post..."
+                multiline
+                rows={4}
                 fullWidth
-                type="textarea"
                 {...register("content", {
                   required: true,
                 })}

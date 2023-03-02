@@ -24,11 +24,6 @@ POST /register
 	- Requires body to contain JSON with the Register-Request object (user's Email and Password)
 	- Returns JSON of the created user (password excluded)
 
-POST /auth/forgot-password
-	- Requires body to contain JSON with the Question-Request object (the email and password of the user, and the 3 security questions and the user's answer.
-	- Returns text saying the "Password successfully updated" if successful.
-	- Returns nothing (other than a bad-status code) if unsuccessful.
-
 
 Posts
 Responsible for all information on forum posts.
@@ -37,4 +32,5 @@ GET /post
 	- Returns all posts and comments.
   
 POST /post
-  - Requires body to contain JSON with the post object (userID and content)
+  	- Requires body to contain JSON with the post object (userID and content)
+	- Returns JSON of the postid from the created post

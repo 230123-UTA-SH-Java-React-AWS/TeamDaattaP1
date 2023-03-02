@@ -27,11 +27,13 @@ import { RootState } from "../redux/store";
 import { useNavigate } from "react-router";
 
 function Authenticate() {
+  //redux
   const dispatch = useAppDispatch();
+
+  //show the correct tab (login, register)
   const [state, setState] = useState({
     activeTab: 0,
   });
-
   const handleChange = (
     value: number,
     event: React.MouseEvent<HTMLButtonElement>
@@ -40,6 +42,7 @@ function Authenticate() {
   };
   const { activeTab } = state;
 
+  // react-hook-forms stuff
   const {
     register,
     handleSubmit,
@@ -102,41 +105,44 @@ function Authenticate() {
             {activeTab === 0 && (
               <form>
                 <GroupBox className="groupBox" label="Email">
-                  <Frame
-                    variant="well"
-                    style={{ width: "100%", marginBottom: ".5rem" }}
-                  >
-                    example@gmail.com
-                  </Frame>
                   <TextInput
                     placeholder="Type email here..."
                     fullWidth
                     type="email"
                     {...register("email", {
                       required: true,
-                      pattern: /^\S+@\S+$/i,
+                      pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                     })}
                   />
+                  {errors.email && (
+                    <p>Email address not valid. example@gmail.com</p>
+                  )}
                 </GroupBox>
 
                 <GroupBox className="groupBox" label="Password">
-                  <Frame
-                    variant="well"
-                    style={{ width: "100%", marginBottom: ".5rem" }}
-                  >
-                    minimum 4 characters, must include atleast 1 number and
-                    symbol
-                  </Frame>
                   <TextInput
                     placeholder="Type password here..."
                     fullWidth
                     type="password"
                     {...register("password", {
                       required: true,
-                      max: 16,
-                      min: 4,
+                      minLength: {
+                        value: 8,
+                        message: "Password must be at least 8 characters long",
+                      },
+                      pattern: {
+                        value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                        message:
+                          "Password must contain at least one letter and one number",
+                      },
                     })}
                   />
+                  {errors.password && (
+                    <p>
+                      Your password must be at least 8 characters long and must
+                      contain atleast 1 number
+                    </p>
+                  )}
                 </GroupBox>
                 <Button
                   size="lg"
@@ -150,56 +156,46 @@ function Authenticate() {
             {activeTab === 1 && (
               <form>
                 <GroupBox className="groupBox" label="Email">
-                  <Frame
-                    variant="well"
-                    style={{ width: "100%", marginBottom: ".5rem" }}
-                  >
-                    example@gmail.com
-                  </Frame>
                   <TextInput
                     placeholder="Type email here..."
                     fullWidth
                     type="email"
                     {...register("email", {
                       required: true,
-                      pattern: /^\S+@\S+$/i,
+                      pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                     })}
                   />
+                  {errors.email && (
+                    <p>Email address is not valid. example@gmail.com</p>
+                  )}
                 </GroupBox>
 
                 <GroupBox className="groupBox" label="Password">
-                  <Frame
-                    variant="well"
-                    style={{ width: "100%", marginBottom: ".5rem" }}
-                  >
-                    minimum 4 characters, must include atleast 1 number and
-                    symbol
-                  </Frame>
                   <TextInput
                     placeholder="Type password here..."
                     fullWidth
                     type="password"
                     {...register("password", {
                       required: true,
-                      max: 16,
-                      min: 4,
+                      minLength: {
+                        value: 8,
+                        message: "Password must be at least 8 characters long",
+                      },
+                      pattern: {
+                        value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                        message:
+                          "Password must contain at least one letter and one number",
+                      },
                     })}
                   />
+                  {errors.password && (
+                    <p>
+                      Your password must be at least 8 characters long and must
+                      contain atleast 1 number
+                    </p>
+                  )}
                 </GroupBox>
 
-                {/* <GroupBox className="groupBox" label="Confirm Password">
-                  <Frame
-                    variant="well"
-                    style={{ width: "100%", marginBottom: ".5rem" }}
-                  >
-                    passwords must match
-                  </Frame>
-                  <TextInput
-                    placeholder="Type password here..."
-                    fullWidth
-                    type="password"
-                  />
-                </GroupBox> */}
                 <Button
                   size="lg"
                   className="form-btn"

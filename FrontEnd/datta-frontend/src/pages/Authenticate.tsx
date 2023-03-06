@@ -138,9 +138,10 @@ function Authenticate() {
                         message: "Password must be at least 8 characters long",
                       },
                       pattern: {
-                        value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                        value:
+                          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
                         message:
-                          "Password must contain at least one letter and one number",
+                          "Password must contain at least one upper case, one lower case letter, one number and one special character [#?!@$%^&*-]",
                       },
                     })}
                   />
@@ -190,9 +191,10 @@ function Authenticate() {
                         message: "Password must be at least 8 characters long",
                       },
                       pattern: {
-                        value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                        value:
+                          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
                         message:
-                          "Password must contain at least one letter and one number",
+                          "Password must contain at least one upper case, one lower case letter, one number and one special character [#?!@$%^&*-]",
                       },
                     })}
                   />

@@ -15,13 +15,10 @@ public final class App {
 
     public static void main(String[] args) throws Exception{
 
-        Javalin app = Javalin.create(config -> {
-//            config.enableCorsForAllOrigins();
-//            config.enableCorsForOrigin("http://localhost:3000");
-        });
+        Javalin app = Javalin.create();
 
         app.before((ctx) -> {
-            ctx.header("Access-Control-Allow-Origin", "*");
+            ctx.header("Access-Control-Allow-Origin", "http://localhost:3000");
             ctx.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
             ctx.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
         });

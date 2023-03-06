@@ -15,10 +15,7 @@ public final class App {
 
     public static void main(String[] args) throws Exception{
 
-        Javalin app = Javalin.create(config -> {
-//            config.enableCorsForAllOrigins();
-//            config.enableCorsForOrigin("http://localhost:3000");
-        });
+        Javalin app = Javalin.create();
 
         app.before((ctx) -> {
             ctx.header("Access-Control-Allow-Origin", "http://localhost:3000");

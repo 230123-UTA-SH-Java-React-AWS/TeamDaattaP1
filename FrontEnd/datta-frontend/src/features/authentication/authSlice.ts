@@ -56,6 +56,7 @@ const authSlice = createSlice({
       state.error = null;
       state.token = "";
       localStorage.removeItem("token");
+      localStorage.removeItem("userid");
     },
     loginWithToken: (state, action: PayloadAction<string>) => {
       state.isAuthenticated = true;
